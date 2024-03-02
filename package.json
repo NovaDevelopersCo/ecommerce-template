@@ -1,0 +1,22 @@
+{
+	"name": "ecommerce-template",
+	"version": "1.0.0",
+	"description": "Template for Next ecommerce projects created by @Lordpluha",
+	"main": "index.js",
+	"repository": "https://github.com/NovaDevelopersCo/ecommerce-template.git",
+	"author": "vtesliuk <109725756+Lordpluha@users.noreply.github.com>",
+	"license": "Apache-2.0",
+	"private": true,
+	"workspaces": {
+		"packages": [
+			"client",
+			"server"
+		]
+	},
+	"scripts": {
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"husky": "^9.0.11"
+	}
+}

@@ -1,0 +1,2 @@
+yarn workspace @ecommerce-template/client pretty
+yarn workspace @ecommerce-template/client lint
