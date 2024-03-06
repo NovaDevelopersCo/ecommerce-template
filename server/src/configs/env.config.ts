@@ -8,6 +8,12 @@ export class EnvironmentVariables {
 
   @IsString()
   MONGO_URL: string;
+
+  @IsString()
+  ACCESS_JWT_SECRET: string;
+
+  @IsString()
+  REFRESH_JWT_SECRET: string;
 }
 
 export const EnvConfigOptions: ConfigModuleOptions = {
