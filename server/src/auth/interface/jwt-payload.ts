@@ -1,16 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Role } from 'src/core/enum/role.enum';
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { User } from 'src/modules/user/schemas/user.schema';
 
-export class JwtPayload {
+export class JwtPayload extends PickType(User, ['email', 'name', 'role']) {
   @ApiProperty()
   id: string;
-
-  @ApiProperty()
-  name: string;
-
-  @ApiProperty()
-  email: string;
-
-  @ApiProperty({ enum: Role, default: Role.USER })
-  role: Role;
 }
