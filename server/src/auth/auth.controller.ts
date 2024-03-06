@@ -15,7 +15,15 @@ import { CookieOptions, Response } from 'express';
 import { REFRESH_COOKIE } from './constants';
 import { Cookie, User } from 'src/core/decorators';
 import { RefreshJwtGuard } from './guards/refresh-jwt.guard';
+import {
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { ResponseOK, ResponseRefresh } from './interface/swagger';
 
+@ApiTags('auth')
 @UsePipes(new ValidationPipe({ whitelist: true }))
 @Controller('auth')
 export class AuthController {
@@ -27,6 +35,10 @@ export class AuthController {
     path: '/',
   };
 
+  @ApiOkResponse({
+    type: ResponseOK,
+    description: `set cookie ${REFRESH_COOKIE}`,
+  })
   @HttpCode(HttpStatus.OK)
   @Post('registration')
   async registration(
@@ -39,6 +51,10 @@ export class AuthController {
     return data;
   }
 
+  @ApiOkResponse({
+    type: ResponseOK,
+    description: `set cookie ${REFRESH_COOKIE}`,
+  })
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
@@ -51,6 +67,11 @@ export class AuthController {
     return data;
   }
 
+  @ApiOkResponse({
+    type: ResponseRefresh,
+    description: `set new  ${REFRESH_COOKIE}`,
+  })
+  @ApiUnauthorizedResponse({ description: 'No valid token' })
   @RefreshJwtGuard()
   @HttpCode(HttpStatus.OK)
   @Get('refresh')
@@ -67,6 +88,7 @@ export class AuthController {
     return { accessToken };
   }
 
+  @ApiNoContentResponse({ description: `delete key ${REFRESH_COOKIE} cookie` })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Get('logout')
   async logout(
