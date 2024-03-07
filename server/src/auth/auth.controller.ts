@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { LoginDto, RegistrationDto } from './dto';
 import { CookieOptions, Response } from 'express';
 import { REFRESH_COOKIE } from './constants';
-import { Cookie, User } from 'src/core/decorators';
+import { Cookie, User } from '@core/decorators';
 import { RefreshJwtGuard } from './guards/refresh-jwt.guard';
 import {
   ApiNoContentResponse,

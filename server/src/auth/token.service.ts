@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Token } from './schemas/token.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from 'src/modules/user/schemas/user.schema';
+import { User } from '@modules/user/schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ACCESS_JWT_SECRET, REFRESH_JWT_SECRET } from './constants';

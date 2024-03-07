@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { AbstractModel } from 'src/core/abstract/abstract.schema';
-import { Role } from 'src/core/enum/role.enum';
+import { AbstractModel } from '@core/abstract/abstract.schema';
+import { Role } from '@core/enum/role.enum';
 
 @Schema()
 export class User extends AbstractModel {
