@@ -7,7 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { getMailConfig } from './configs/mail.config';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { TelegramModule } from './telegram/telegram.module';
+import { TelegramModule } from './notification/telegram/telegram.module';
 import { getTelegramConfig } from './configs/telegram.config';
 
 @Module({

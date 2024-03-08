@@ -1,18 +1,17 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
-import { MailerService } from '@nestjs-modules/mailer';
-import { join } from 'path';
-import { ConfigService } from '@nestjs/config';
+import { MailService } from 'src/notification/mail/mail.service';
+import { IMail } from 'src/notification/mail/interfaces/mail.interface';
+import { IEmailUser } from 'src/notification/mail/interfaces/user.interface';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    private readonly mailerService: MailerService,
-    private configService: ConfigService
+    private mailService:MailService
   ) {}
 
   async byEmail(email: string) {
@@ -30,27 +29,17 @@ export class UserService {
     return user;
   }
 
-  async sendConfirmMail(user: CreateUserDto) {
-    const urlConfirmAddress = this.configService.get<string>(
-      'URL_CONFIRM_ADDRESS',
-    );
-    
-    return await this.mailerService
-      .sendMail({
-        to: user.email,
-        subject: 'Подтверждение регистрации',
-        template: join(__dirname, '/../templates', 'confirmReg'),
-        context: {
-          email: user.email,
-          username: user.name,
-          urlConfirmAddress,
-        },
-      })
-      .catch((e) => {
-        throw new HttpException(
-          `Ошибка работы почты: ${JSON.stringify(e)}`,
-          HttpStatus.UNPROCESSABLE_ENTITY,
-        );
-      });
+  async sendConfirmMail(user: IEmailUser) {
+    const mailContent:IMail<IEmailUser> = {
+      to: user.email,
+      subject: 'Confirm registration', //Example
+      template: 'confirmReg',
+      context: {
+        email: user.email,
+        name: user.name,
+        phone: user.phone
+      }
+    }
+    this.mailService.emailSend(mailContent)
   }
 }
