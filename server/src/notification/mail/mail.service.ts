@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
-import { IMail } from './interfaces/mail.interface';
+import { IMail } from './interfaces';
 
 @Injectable()
 export class MailService {

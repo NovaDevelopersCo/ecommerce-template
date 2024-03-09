@@ -4,8 +4,7 @@ import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { MailService } from 'src/notification/mail/mail.service';
-import { IMail } from 'src/notification/mail/interfaces/mail.interface';
-import { IEmailUser } from 'src/notification/mail/interfaces/user.interface';
+import { IMail, IEmailUser } from 'src/notification/mail/interfaces';
 
 @Injectable()
 export class UserService {
