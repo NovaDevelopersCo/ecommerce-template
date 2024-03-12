@@ -9,9 +9,8 @@ export class FileService {
     const [mimetype, type] = file.mimetype.split('/');
 
     const fileName = randomUUID() + '.' + type;
-    const uploadFolder = join(__dirname, '..', '../static');
+    const uploadFolder = join(__dirname, '..', '..', '../static');
     const isDir = await this.exists(uploadFolder);
-
     if (!isDir) await mkdir(uploadFolder, { recursive: true });
 
     const dirMimetypePath = join(uploadFolder, '/' + mimetype);
@@ -26,7 +25,7 @@ export class FileService {
   async deleteFile(filename: string) {
     try {
       const [dir, file] = filename.split('/');
-      const path = join(__dirname, '..', '../static', `/${dir}`, file);
+      const path = join(__dirname, '..', '..', '../static', `/${dir}`, file);
       await unlink(path);
     } catch (e) {
       console.error(e);
