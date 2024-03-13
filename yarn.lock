@@ -1478,6 +1478,11 @@
     "@types/mime" "*"
     "@types/node" "*"
 
+"@types/slug@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@types/slug/-/slug-5.0.8.tgz#76d40f033a8a99793f3dcbfb3f187ab9014f9d47"
+  integrity sha512-mblTWR1OST257k1gZ3QvqG+ERSr8Ea6dyM1FH6Jtm4jeXi0/r0/95VNctofuiywPxCVQuE8AuFoqmvJ4iVUlXQ==
+
 "@types/stack-utils@^2.0.0":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.3.tgz#6209321eb2c1712a7e7466422b8cb1fc0d9dd5d8"
@@ -6772,6 +6777,11 @@ slash@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
+
+slug@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/slug/-/slug-9.0.0.tgz#68f968a79ce5156c6606b7b2e233ed0ffab94bdf"
+  integrity sha512-ixytnHlpHPWM56heaGgYe/M8tDAcpJcsg/zBuyElbFDOORzMGOeP3Te6iJBRVYu3WQEiWLQPb70Gh9ig/sZgGQ==
 
 "source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2:
   version "1.0.2"
