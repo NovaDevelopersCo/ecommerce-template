@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { access, mkdir, writeFile, unlink } from 'fs/promises';
 import { join } from 'path';
+import sharp from 'sharp';
 
 @Injectable()
 export class FileService {
@@ -30,6 +31,10 @@ export class FileService {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  async convertToWebp(file: Buffer) {
+    return await sharp(file).webp().toBuffer();
   }
 
   private async exists(path: string) {
