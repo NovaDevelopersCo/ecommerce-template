@@ -32,7 +32,7 @@ export class ProductService {
     image: Express.Multer.File,
     albumFile?: Express.Multer.File[],
   ) {
-    const imageUrl = await this.fileService.uploadFile(image);
+    const imageUrl = await this.convertAndUpload(image);
     let album: { sort: number; image: string }[];
 
     if (albumFile) {
@@ -40,7 +40,7 @@ export class ProductService {
         albumFile.map(async (file: Express.Multer.File, index: number) => {
           return {
             sort: index,
-            image: await this.fileService.uploadFile(file),
+            image: await this.convertAndUpload(file),
           };
         }),
       );
@@ -88,7 +88,7 @@ export class ProductService {
     const product = await this.findOne(id);
     if (dto.name) dto['slug'] = generateSlug(dto.name + '-' + id);
     if (image) {
-      dto['image'] = await this.fileService.uploadFile(image);
+      dto['image'] = await this.convertAndUpload(image);
       this.fileService.deleteFile(product.image);
     }
     return this.productModel.findOneAndUpdate(
@@ -111,7 +111,7 @@ export class ProductService {
         files.map(async (file: Express.Multer.File, index: number) => {
           return {
             sort: index,
-            image: await this.fileService.uploadFile(file),
+            image: await this.convertAndUpload(file),
           };
         }),
       );
@@ -126,7 +126,7 @@ export class ProductService {
         files.map(async (file: Express.Multer.File, index: number) => {
           return {
             sort: index + product.album.length,
-            image: await this.fileService.uploadFile(file),
+            image: await this.convertAndUpload(file),
           };
         }),
       );
@@ -161,5 +161,14 @@ export class ProductService {
     });
 
     return sorted;
+  }
+
+  private async convertAndUpload(file: Express.Multer.File) {
+    const buffer = await this.fileService.convertToWebp(file.buffer);
+    return await this.fileService.uploadFile({
+      ...file,
+      buffer,
+      mimetype: 'image/webp',
+    });
   }
 }
