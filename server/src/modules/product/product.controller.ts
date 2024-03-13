@@ -9,54 +9,107 @@ import {
   UsePipes,
   ValidationPipe,
   UseInterceptors,
-  FileTypeValidator,
-  UploadedFile,
-  ParseFilePipe,
+  HttpCode,
+  HttpStatus,
+  UploadedFiles,
+  BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import {
+  CreateProductDto,
+  PaginationProductQuery,
+  UpdateProductDto,
+  UploadAlbumDto,
+} from './dto';
 import { ApiTags } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileFieldsValidator } from '@core/validators';
+import { FILE_IS_REQUERED, FILE_WITH_IMAGE_IS_REQUERED } from './constants';
+import { ObjectIdValidationPipe } from '@/core/pipes/object-id.validation.pipe';
 
 @ApiTags('product')
-@UsePipes(new ValidationPipe({ whitelist: true }))
+@UsePipes(
+  new ValidationPipe({
+    whitelist: true,
+    transform: true,
+  }),
+)
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @UseInterceptors(FileInterceptor('image'))
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'album', maxCount: 10 },
+      { name: 'image', maxCount: 1 },
+    ]),
+  )
   @Post()
   create(
-    @Body() createProductDto: CreateProductDto,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
-        fileIsRequired: false,
-      }),
-    )
-    image: Express.Multer.File,
+    @Body() dto: CreateProductDto,
+    @UploadedFiles({
+      transform: new FileFieldsValidator(/\/(jpg|jpeg|png)$/).transform,
+    })
+    files: { album?: Express.Multer.File[]; image: Express.Multer.File[] },
   ) {
-    return this.productService.create(createProductDto);
+    if (!files.image || !files.image.length)
+      throw new BadRequestException(FILE_WITH_IMAGE_IS_REQUERED);
+    return this.productService.create(dto, files.image[0], files.album);
   }
 
+  @HttpCode(HttpStatus.OK)
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  findAll(@Query() query: PaginationProductQuery) {
+    return this.productService.findAll(query);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  findOne(@Param('id', ObjectIdValidationPipe) id: string) {
+    return this.productService.findOne(id, true);
   }
 
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'image', maxCount: 1 }]))
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+  update(
+    @Param('id', ObjectIdValidationPipe) id: string,
+    @Body() dto: UpdateProductDto,
+    @UploadedFiles({
+      transform: new FileFieldsValidator(/\/(jpg|jpeg|png)$/).transform,
+    })
+    files: {
+      image?: Express.Multer.File[];
+    },
+  ) {
+    let file;
+    if (files?.image) {
+      file = files?.image[0];
+    }
+    console.log(dto, 'st');
+    return this.productService.update(id, dto, file);
   }
 
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'album', maxCount: 10 }]))
+  @Patch('album/:id')
+  uploadAlbumFiles(
+    @Param('id', ObjectIdValidationPipe) id: string,
+    @Body() { type }: UploadAlbumDto,
+    @UploadedFiles({
+      transform: new FileFieldsValidator(/\/(jpg|jpeg|png)$/).transform,
+    })
+    files: { album: Express.Multer.File[] },
+  ) {
+    if (!files || !files.album.length)
+      throw new BadRequestException(FILE_IS_REQUERED);
+    return this.productService.updateAlbumFiles(id, files.album, type);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+  remove(@Param('id', ObjectIdValidationPipe) id: string) {
+    return this.productService.remove(id);
   }
 }
