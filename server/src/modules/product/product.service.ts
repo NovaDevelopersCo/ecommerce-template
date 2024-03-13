@@ -1,32 +1,165 @@
-import { Injectable } from '@nestjs/common';
-import { CreateProductDto, UpdateProductDto } from './dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  PaginationProductQuery,
+} from './dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Product } from './schemas/product.schema';
-import { Model } from 'mongoose';
+import {
+  Product,
+  ProductCharacteristicGroup,
+  ProductAlbum,
+} from './schemas/product.schema';
+import { Document, Model } from 'mongoose';
+import { FileService } from '@/core/file/file.service';
+import * as generateSlug from 'slug';
+import { PaginationDto } from '@/core/pagination';
+import { TypeReplaceEnum } from '@/core/enums/type-replace.enum';
+
+type TypeProductForSort = Document<unknown, object, Product> &
+  Product &
+  Required<{ _id: string }>;
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<Product>,
+    private readonly fileService: FileService,
   ) {}
 
-  create(dto: CreateProductDto) {
-    return 'This action adds a new product';
+  async create(
+    dto: CreateProductDto,
+    image: Express.Multer.File,
+    albumFile?: Express.Multer.File[],
+  ) {
+    const imageUrl = await this.fileService.uploadFile(image);
+    let album: { sort: number; image: string }[];
+
+    if (albumFile) {
+      album = await Promise.all(
+        albumFile.map(async (file: Express.Multer.File, index: number) => {
+          return {
+            sort: index,
+            image: await this.fileService.uploadFile(file),
+          };
+        }),
+      );
+    }
+
+    const product = await this.productModel.create({
+      ...dto,
+      image: imageUrl,
+      album: album,
+    });
+    product.slug = generateSlug(product.name + '-' + product._id);
+    product.save();
+    return product;
   }
 
-  findAll() {
-    return `This action returns all product`;
+  async findAll({ count, page }: PaginationProductQuery) {
+    const [products] = await this.productModel.aggregate([
+      {
+        $sort: {
+          createdAt: 1,
+        },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: page * count - count }, { $limit: count }],
+        },
+      },
+    ]);
+
+    const sortedProducts = this.sort(products.data);
+    return new PaginationDto(sortedProducts, products.metadata[0].total, count);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: string, isSort: boolean = false) {
+    const product = await this.productModel.findById(id);
+    if (!product) throw new NotFoundException();
+    if (isSort) {
+      return this.sort([product])[0];
+    }
+    return product;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, dto: UpdateProductDto, image?: Express.Multer.File) {
+    const product = await this.findOne(id);
+    if (dto.name) dto['slug'] = generateSlug(dto.name + '-' + id);
+    if (image) {
+      dto['image'] = await this.fileService.uploadFile(image);
+      this.fileService.deleteFile(product.image);
+    }
+    return this.productModel.findOneAndUpdate(
+      { _id: id },
+      { ...dto },
+      { returnDocument: 'after' },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async updateAlbumFiles(
+    id: string,
+    files: Express.Multer.File[],
+    type: TypeReplaceEnum = TypeReplaceEnum.ALL,
+  ) {
+    const product = await this.findOne(id);
+
+    let album;
+    if (type === TypeReplaceEnum.ALL) {
+      album = await Promise.all(
+        files.map(async (file: Express.Multer.File, index: number) => {
+          return {
+            sort: index,
+            image: await this.fileService.uploadFile(file),
+          };
+        }),
+      );
+      await Promise.all(
+        product.album.map(
+          async (file) => await this.fileService.deleteFile(file.image),
+        ),
+      );
+    }
+    if (type === TypeReplaceEnum.ADD_AFTER) {
+      const newAlbum = await Promise.all(
+        files.map(async (file: Express.Multer.File, index: number) => {
+          return {
+            sort: index + product.album.length,
+            image: await this.fileService.uploadFile(file),
+          };
+        }),
+      );
+      album = [...product.album, ...newAlbum];
+    }
+
+    product.album = album;
+    return product.save();
+  }
+
+  async remove(id: string) {
+    const product = await this.findOne(id);
+    await Promise.all(
+      product.album.map(async ({ image }) => {
+        await this.fileService.deleteFile(image);
+      }),
+    );
+    await this.fileService.deleteFile(product.image);
+    await this.productModel.deleteOne({ _id: id });
+  }
+
+  private sort<T extends TypeProductForSort>(products: T[]): T[] {
+    const sorted = products.map((product) => {
+      product.characteristics = product.characteristics.sort(
+        (a: ProductCharacteristicGroup, b: ProductCharacteristicGroup) =>
+          a.sort - b.sort,
+      );
+      product.album = product.album.sort(
+        (a: ProductAlbum, b: ProductAlbum) => a.sort - b.sort,
+      );
+      return product;
+    });
+
+    return sorted;
   }
 }
