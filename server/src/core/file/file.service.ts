@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { access, mkdir, writeFile, unlink } from 'fs/promises';
 import { join } from 'path';
-import sharp from 'sharp';
+import * as sharp from 'sharp';
 
 @Injectable()
 export class FileService {
