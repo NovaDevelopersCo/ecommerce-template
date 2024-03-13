@@ -14,13 +14,15 @@
 		"sb": "storybook dev -p 6006",
 		"build-sb": "storybook build",
 		"pretty": "prettier --write --cache --cache-location .cache/.prettiercache ./src/**/*.{js,jsx,mjs,ts,tsx,css,scss,sass,less}",
-		"prepare": "husky"
+		"prepare": "husky",
+		"test-server": "json-server db.json --port 3001 --watch"
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^2.2.0",
 		"antd": "^5.14.2",
 		"modern-normalize": "^2.0.0",
 		"next": "14.1.0",
+		"next-redux-wrapper": "^8.1.0",
 		"react": "^18",
 		"react-dom": "^18",
 		"react-redux": "^9.1.0",
@@ -50,7 +52,6 @@
 		"eslint-plugin-storybook": "^0.6.15",
 		"postcss": "^8",
 		"prettier": "^3.2.5",
-		"redux-devtools-extension": "^2.13.9",
 		"tailwindcss": "^3.3.0",
 		"typescript": "^5"
 	}

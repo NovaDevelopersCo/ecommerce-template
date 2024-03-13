@@ -2,11 +2,15 @@ import { FC, HTMLAttributes } from 'react'
 
 import { Button } from 'antd'
 
-type TAddToCartBtnProps = object & HTMLAttributes<HTMLButtonElement>
+import { IProduct } from '@entities/ProductCard'
 
-const AddToCartBtn: FC<TAddToCartBtnProps> = ({ ...props }) => {
+type TAddToCartBtnProps = {
+	product: IProduct
+} & HTMLAttributes<HTMLButtonElement>
+
+const AddToCartBtn: FC<TAddToCartBtnProps> = ({ product, ...props }) => {
 	return (
-		<Button block {...props}>
+		<Button block {...props} onClick={() => {}}>
 			Add to cart
 		</Button>
 	)
