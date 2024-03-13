@@ -1,14 +1,15 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
+  IsMongoId,
   IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 
-class ProductCharacteristicDto {
+export class ProductCharacteristicDto {
   @IsString()
   name: string;
 
@@ -16,10 +17,11 @@ class ProductCharacteristicDto {
   value: string;
 }
 
-class ProductCharacteristicGroupDto {
+export class ProductCharacteristicGroupDto {
   @IsString()
   name: string;
 
+  @Type(() => Number)
   @IsNumber()
   sort: number;
 
@@ -29,47 +31,37 @@ class ProductCharacteristicGroupDto {
   characteristics: ProductCharacteristicDto[];
 }
 
-// class ProductAlbumDto {
-//   @
-//   image: string;
-
-//   @IsInt()
-//   sort: number;
-// }
-
 export class CreateProductDto {
   @IsString()
   name: string;
-
-  @IsArray()
-  @IsOptional()
-  tags: string[];
-
-  @Type(() => Boolean)
-  @IsBoolean()
-  inStock: boolean;
 
   @IsString()
   @IsOptional()
   description?: string;
 
   @IsNumber()
+  @Type(() => Number)
   price: number;
+
+  @IsMongoId()
+  @IsOptional()
+  manufacturer?: string;
+
+  @IsBoolean()
+  @Transform(({ value }) => value == 'true')
+  isStock: boolean;
+
+  @IsArray()
+  @IsOptional()
+  tags: string[];
+
+  @IsOptional()
+  @IsMongoId({ each: true })
+  @IsArray()
+  categories: string[];
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductCharacteristicGroupDto)
   characteristics: ProductCharacteristicGroupDto[];
-
-  // replace validate ObjectId
-  @IsString()
-  @IsOptional()
-  manufacturer?: string;
-
-  // album: ProductAlbum[];
-
-  @IsArray({ each: true })
-  @IsString()
-  @IsOptional()
-  categories: string[];
 }
