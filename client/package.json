@@ -14,7 +14,8 @@
 		"sb": "storybook dev -p 6006",
 		"build-sb": "storybook build",
 		"pretty": "prettier --write --cache --cache-location .cache/.prettiercache ./src/**/*.{js,jsx,mjs,ts,tsx,css,scss,sass,less}",
-		"prepare": "husky"
+		"prepare": "husky",
+		"test-server": "json-server db.json --port 3001 --watch"
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^2.2.0",
