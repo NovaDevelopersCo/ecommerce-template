@@ -9,7 +9,7 @@ class ProductCharacteristic {
   value: string;
 }
 
-class ProductCharacteristicGroup {
+export class ProductCharacteristicGroup {
   @Prop({ required: true })
   name: string;
 
@@ -20,7 +20,7 @@ class ProductCharacteristicGroup {
   characteristics: ProductCharacteristic[];
 }
 
-class ProductAlbum {
+export class ProductAlbum {
   @Prop({ required: true })
   image: string;
 
@@ -39,8 +39,8 @@ export class Product extends AbstractModel {
   @Prop([String])
   tags: string[];
 
-  @Prop({ required: true })
-  inStock: true;
+  @Prop({ required: true, type: Boolean })
+  isStock: boolean;
 
   @Prop()
   description?: string;
@@ -52,10 +52,10 @@ export class Product extends AbstractModel {
   image: string;
 
   @Prop({ type: () => [ProductCharacteristicGroup], _id: false })
-  characteristics: ProductCharacteristicGroup[];
+  characteristics?: ProductCharacteristicGroup[];
 
   @Prop({ type: () => [ProductAlbum], _id: false })
-  album: ProductAlbum[];
+  album?: ProductAlbum[];
 
   // @Prop()
   // manufacturer?: string;
