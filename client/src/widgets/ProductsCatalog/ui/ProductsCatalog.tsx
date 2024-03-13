@@ -7,9 +7,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types'
 
 import { useGetAllProductsQuery } from '@store/index'
 
-
 import { IProduct } from '@entities/ProductCard'
-
 
 import Paggination from './@Paggination/Paggination'
 import FullProductCard from './@ProductCard/FullProductCard'
@@ -67,6 +65,7 @@ const ProductsCatalog = () => {
 			>
 				{data?.map(product => (
 					<FullProductCard product={product} key={product.id} />
+				)) || 'No products'}
 			</div>
 			{/* <Paggination page={page} /> */}
 		</div>
