@@ -1,15 +1,20 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateProductDto } from './create-product.dto';
-import { IsArray, IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class UpdateAlbum {
-  @IsOptional()
   @Type(() => Number)
   @IsNumber()
   sort: number;
 
-  // only for type
+  @IsString()
   image: string;
 }
 
