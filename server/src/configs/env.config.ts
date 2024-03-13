@@ -14,6 +14,30 @@ export class EnvironmentVariables {
 
   @IsString()
   REFRESH_JWT_SECRET: string;
+
+
+  //Email config
+  @IsString()
+  MAIL_USER: string;
+
+  @IsString()
+  MAIL_PASS: string;
+
+  @IsString()
+  MAIL_HOST: string;
+
+  @IsString()
+  MAIL_FROM_NAME: string;
+
+  @IsString()
+  MAIL_FROM_EMAIL: string;
+
+  //Telegramm config
+  @IsString()
+  TELEGRAF_API: string;
+
+  @IsString()
+  CHAT_ID: string;
 }
 
 export const EnvConfigOptions: ConfigModuleOptions = {
