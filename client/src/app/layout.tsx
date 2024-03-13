@@ -22,8 +22,10 @@ export default function RootLayout({ children }: PropsWithChildren<unknown>) {
 		<html lang='en'>
 			<body className={roboto.className}>
 				<AppProvider>
-					Root Layout
-					{children}
+					<div className='p-2'>
+						Root Layout
+						{children}
+					</div>
 				</AppProvider>
 			</body>
 		</html>

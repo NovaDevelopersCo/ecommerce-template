@@ -1,3 +1,9 @@
+import { ProductsCatalog } from '@widgets/ProductsCatalog'
+
 export default function Home() {
-	return <main>Main page</main>
+	return (
+		<main>
+			<ProductsCatalog />
+		</main>
+	)
 }
