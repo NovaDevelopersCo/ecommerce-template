@@ -63,5 +63,5 @@ export class CreateProductDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductCharacteristicGroupDto)
-  characteristics: ProductCharacteristicGroupDto[];
+  characteristics?: ProductCharacteristicGroupDto[];
 }
