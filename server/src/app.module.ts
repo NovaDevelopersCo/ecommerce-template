@@ -9,6 +9,7 @@ import { getMailConfig } from './configs/mail.config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { TelegramModule } from './notification/telegram/telegram.module';
 import { getTelegramConfig } from './configs/telegram.config';
+import { MailModule } from './notification/mail/mail.module';
 
 @Module({
   imports: [
@@ -26,9 +27,10 @@ import { getTelegramConfig } from './configs/telegram.config';
     UserModule,
     TelegramModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigModule],
-      useFactory: getTelegramConfig
+      inject: [ConfigService],
+      useFactory: getTelegramConfig,
     }),
+    MailModule,
   ],
 })
 export class AppModule {}
