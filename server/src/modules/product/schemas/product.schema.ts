@@ -39,8 +39,8 @@ export class Product extends AbstractModel {
   @Prop([String])
   tags: string[];
 
-  @Prop({ required: true, type: Boolean })
-  isStock: boolean;
+  @Prop({ required: true, type: Number })
+  isStock: number;
 
   @Prop()
   description?: string;
