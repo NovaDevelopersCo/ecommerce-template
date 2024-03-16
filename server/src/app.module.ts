@@ -10,6 +10,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { TelegramModule } from './notification/telegram/telegram.module';
 import { getTelegramConfig } from './configs/telegram.config';
 import { MailModule } from './notification/mail/mail.module';
+import { ManufacturerModule } from './modules/manufacturer/manufacturer.module';
 
 @Module({
   imports: [
@@ -23,14 +24,15 @@ import { MailModule } from './notification/mail/mail.module';
       useFactory: getMailConfig,
     }),
     FileModule,
-    AuthModule,
-    UserModule,
     TelegramModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: getTelegramConfig,
     }),
     MailModule,
+    AuthModule,
+    UserModule,
+    ManufacturerModule,
   ],
 })
 export class AppModule {}
