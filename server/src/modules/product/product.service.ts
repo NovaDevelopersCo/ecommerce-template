@@ -7,7 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import {
   Product,
-  ProductCharacteristicGroup,
+  Characteristic,
   ProductAlbum,
 } from './schemas/product.schema';
 import { Document, Model } from 'mongoose';
@@ -151,7 +151,7 @@ export class ProductService {
   private sort<T extends TypeProductForSort>(products: T[]): T[] {
     const sorted = products.map((product) => {
       product.characteristics = product.characteristics.sort(
-        (a: ProductCharacteristicGroup, b: ProductCharacteristicGroup) =>
+        (a: Characteristic, b: Characteristic) =>
           a.sort - b.sort,
       );
       product.album = product.album.sort(

@@ -1,24 +1,8 @@
 import { AbstractModel } from '@/core/abstract/abstract.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
-class ProductCharacteristic {
-  @Prop({ required: true })
-  name: string;
-
-  @Prop({ required: true })
-  value: string;
-}
-
-export class ProductCharacteristicGroup {
-  @Prop({ required: true })
-  name: string;
-
-  @Prop({ required: true })
-  sort: number;
-
-  @Prop({ type: () => [ProductCharacteristic], _id: false })
-  characteristics: ProductCharacteristic[];
-}
+import { Options } from './options.schema';
+import { Types } from 'mongoose';
+import { Characteristic } from './characteristic.schema';
 
 export class ProductAlbum {
   @Prop({ required: true })
@@ -39,7 +23,7 @@ export class Product extends AbstractModel {
   @Prop([String])
   tags: string[];
 
-  @Prop({ required: true, type: Number })
+  @Prop({ default: 0, type: Number })
   isStock: number;
 
   @Prop()
@@ -51,11 +35,14 @@ export class Product extends AbstractModel {
   @Prop({ required: true })
   image: string;
 
-  @Prop({ type: () => [ProductCharacteristicGroup], _id: false })
-  characteristics?: ProductCharacteristicGroup[];
+  @Prop({ type: Types.ObjectId, ref: Characteristic.name })
+  characteristics?: Characteristic;
 
   @Prop({ type: () => [ProductAlbum], _id: false })
   album?: ProductAlbum[];
+
+  @Prop({ type: Types.ObjectId, ref: Options.name })
+  option?: Options;
 
   // @Prop()
   // manufacturer?: string;
@@ -65,3 +52,5 @@ export class Product extends AbstractModel {
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
+export { Characteristic };
+

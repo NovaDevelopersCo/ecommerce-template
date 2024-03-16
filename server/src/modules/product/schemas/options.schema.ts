@@ -23,8 +23,11 @@ export class Options extends AbstractModel {
   @Prop({ default: 0 })
   sort: number;
 
+  @Prop({default: false})
+  required: boolean
+
   @Prop({ type: () => [OptionsType], _id: false })
-  characteristics?: OptionsType[];
+  options?: OptionsType[];
 }
 
 export const OptionsSchema = SchemaFactory.createForClass(Options);
