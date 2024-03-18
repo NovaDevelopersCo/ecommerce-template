@@ -1,7 +1,10 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
+  IsEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -20,13 +23,20 @@ class OptionsTypeDto {
 
 export class CreateOptionsDto {
   @IsString()
+  @IsEmpty()
   name: string;
 
   @IsString()
+  @IsEmpty()
   type: string;
 
+  @IsBoolean()
+  required: boolean
+
   @IsArray()
+  @IsEmpty()
+  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => OptionsTypeDto)
-  characteristics: OptionsTypeDto[];
+  options?: OptionsTypeDto[];
 }

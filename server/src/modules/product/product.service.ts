@@ -7,7 +7,6 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import {
   Product,
-  Characteristic,
   ProductAlbum,
 } from './schemas/product.schema';
 import { Document, Model } from 'mongoose';
@@ -70,6 +69,7 @@ export class ProductService {
         },
       },
     ]);
+console.log(products.data);
 
     const sortedProducts = this.sort(products.data);
     return new PaginationDto(sortedProducts, products.metadata[0].total, count);
@@ -150,10 +150,12 @@ export class ProductService {
 
   private sort<T extends TypeProductForSort>(products: T[]): T[] {
     const sorted = products.map((product) => {
-      product.characteristics = product.characteristics.sort(
-        (a: Characteristic, b: Characteristic) =>
-          a.sort - b.sort,
-      );
+      // if(product.characteristics) {
+      //     product.characteristics = product.characteristics.sort(
+      //     (a: Characteristic, b: Characteristic) =>
+      //       a.sort - b.sort,
+      //   );
+      // }
       product.album = product.album.sort(
         (a: ProductAlbum, b: ProductAlbum) => a.sort - b.sort,
       );

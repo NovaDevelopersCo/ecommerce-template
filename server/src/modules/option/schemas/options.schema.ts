@@ -26,7 +26,10 @@ export class Options extends AbstractModel {
   @Prop({default: false})
   required: boolean
 
-  @Prop({ type: () => [OptionsType], _id: false })
+  @Prop({default: null})
+  image?: string
+
+  @Prop({ type: () => [OptionsType], _id: true })
   options?: OptionsType[];
 }
 

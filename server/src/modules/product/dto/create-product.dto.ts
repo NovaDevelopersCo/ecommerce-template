@@ -8,26 +8,29 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-export class ProductCharacteristicsDto {
+class CreateCharacteristicsDto {
   @IsString()
-  name: string;
+  idCaracteristic: string
 
   @IsString()
-  value: string;
-
-  @IsNumber()
-  sort: number;
+  value:string
 }
 
-export class ProductOptionsDto {
+class CreateOptionsDto {
   @IsString()
-  name: string;
+  idOption: string
 
   @IsString()
-  value: string;
+  optionValue: string
 
   @IsNumber()
-  sort: number;
+  quantity: number
+
+  @IsNumber()
+  price: number
+
+  @IsString()
+  pricePrefix:string
 }
 
 export class CreateProductDto {
@@ -35,7 +38,6 @@ export class CreateProductDto {
   name: string;
 
   @IsString()
-  @IsOptional()
   description: string;
 
   @IsNumber()
@@ -47,7 +49,8 @@ export class CreateProductDto {
   manufacturer?: string;
 
   @IsNumber()
-  isStock: number;
+  @Type(() => Number)
+  stock: number;
 
   @IsArray()
   @IsOptional()
@@ -58,13 +61,14 @@ export class CreateProductDto {
   @IsArray()
   categories: string[];
 
+  @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ProductCharacteristicsDto)
-  characteristics?: ProductCharacteristicsDto[];
+  //@ValidateNested({ each: true })
+  @Type(() => CreateCharacteristicsDto)
+  characteristics?: CreateCharacteristicsDto[];
 
+  @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ProductOptionsDto)
-  options?: ProductOptionsDto[];
+  @Type(() => CreateOptionsDto)
+  options?: CreateOptionsDto[];
 }

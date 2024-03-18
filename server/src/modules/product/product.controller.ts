@@ -57,8 +57,10 @@ export class ProductController {
     })
     files: { album?: Express.Multer.File[]; image: Express.Multer.File[] },
   ) {
-    if (!files.image || !files.image.length)
+    if (!files.image || !files.image.length){
       throw new BadRequestException(FILE_WITH_IMAGE_IS_REQUERED);
+    }
+      
     return this.productService.create(dto, files.image[0], files.album);
   }
 

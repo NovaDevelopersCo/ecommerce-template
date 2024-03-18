@@ -6,6 +6,8 @@ import { FileModule } from '@core/file/file.module';
 import { AuthModule } from '@auth/auth.module';
 import { UserModule } from '@modules/user/user.module';
 import { ProductModule } from '@modules/product/product.module';
+import { CharacteristicModule } from './modules/characteristic/characteristic.module';
+import { OptionModule } from './modules/option/option.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { ProductModule } from '@modules/product/product.module';
     AuthModule,
     UserModule,
     ProductModule,
+    OptionModule,
+    CharacteristicModule
   ],
 })
 export class AppModule {}
