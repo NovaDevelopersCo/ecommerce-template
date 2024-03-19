@@ -22,13 +22,14 @@ import {
   UpdateProductDto,
   UploadAlbumDto,
 } from './dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { FileFieldsValidator } from '@core/validators';
 import { FILE_IS_REQUERED, FILE_WITH_IMAGE_IS_REQUERED } from './constants';
 import { ObjectIdValidationPipe } from '@/core/pipes/object-id.validation.pipe';
 import { RolesAuthGuard } from '@/auth/guards';
 import { Role } from '@/core/enums';
+import { CreateProduct } from './swagger';
 
 @ApiTags('product')
 @UsePipes(
@@ -48,6 +49,10 @@ export class ProductController {
       { name: 'image', maxCount: 1 },
     ]),
   )
+  @ApiOkResponse({
+    type: CreateProduct,
+    description: `Server responce after created product`,
+  })
   @Post()
   @RolesAuthGuard(Role.ADMIN)
   create(
