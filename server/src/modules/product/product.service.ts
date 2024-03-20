@@ -69,7 +69,6 @@ export class ProductService {
         },
       },
     ]);
-console.log(products.data);
 
     const sortedProducts = this.sort(products.data);
     return new PaginationDto(sortedProducts, products.metadata[0].total, count);

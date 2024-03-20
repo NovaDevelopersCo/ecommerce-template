@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsOptional, IsEmpty, IsNotEmpty } from "class-validator";
+import { IsString, IsNumber, IsOptional } from "class-validator";
 
 export class CreateCharacteristicsDto {
   @IsString()

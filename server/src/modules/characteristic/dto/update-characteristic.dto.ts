@@ -1,4 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCharacteristicsDto } from './create-characteristic.dto';
+import { CreateCharacteristicsDto, CreateCharacteristicsGroupDto } from './create-characteristic.dto';
 
-export class UpdateOptionsDto extends PartialType(CreateCharacteristicsDto) {}
+export class UpdateCharacteristicDto extends PartialType(CreateCharacteristicsDto) {}
+
+export class UpdateCharacteristicGroupDto extends PartialType(CreateCharacteristicsGroupDto) {}
