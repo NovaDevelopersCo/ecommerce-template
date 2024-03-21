@@ -1,7 +1,7 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit'
 
 import { productApi } from './api/ProductAPI'
-import { productsSlice, rtkQueryErrorLogger } from './lib'
+import { productsSlice } from './lib'
 import StoreProvider from './ui/StoreProvider'
 
 export const makeStore = () =>
@@ -10,7 +10,6 @@ export const makeStore = () =>
 		middleware: getDefaultMiddleware =>
 			getDefaultMiddleware().concat(
 				productApi.middleware
-				// rtkQueryErrorLogger
 			)
 	})
 

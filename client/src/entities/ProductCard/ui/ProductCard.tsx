@@ -1,6 +1,5 @@
-'use client'
-
-import { FC, PropsWithChildren, ReactNode, useEffect, useState } from 'react'
+// 'use client'
+import { FC, PropsWithChildren, ReactNode } from 'react'
 
 import { Card, Skeleton } from 'antd'
 import Meta from 'antd/es/card/Meta'
@@ -27,11 +26,12 @@ const ProductCard: FC<PropsWithChildren<TProductCardProps>> = ({
 	product,
 	actions
 }) => {
-	const [loading, setLoading] = useState(true)
+	// const [loading, setLoading] = useState(true)
+	// const router = useRouter()
 
-	useEffect(() => {
-		setLoading(false)
-	}, [])
+	// useEffect(() => {
+	// 	setLoading(false)
+	// }, [])
 
 	return (
 		<Card
@@ -46,10 +46,16 @@ const ProductCard: FC<PropsWithChildren<TProductCardProps>> = ({
 					style={{ maxHeight: '50svh', objectFit: 'cover' }}
 				/>
 			}
+			// onClick={() => {
+			// router.replace(`/catalog/${product.category}/${product.id}`)
+			// }}
 		>
-			<Skeleton loading={loading} active>
-				<Meta title={product.name} description={product.description} />
-			</Skeleton>
+			{/* <Skeleton
+				loading={loading}
+				active
+			> */}
+			<Meta title={product.name} description={product.description} />
+			{/* </Skeleton> */}
 		</Card>
 	)
 }

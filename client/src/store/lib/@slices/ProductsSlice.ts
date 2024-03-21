@@ -1,4 +1,4 @@
-import { Action, PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 import { IProduct } from '@entities/ProductCard'
 
@@ -24,7 +24,6 @@ const initialState: IProductsState = {
 // 	return action.type.endsWith('rejected')
 // }
 
-// https://redux-toolkit.js.org/api/createSlice#extrareducers
 export const productsSlice = createSlice({
 	name: 'products',
 	initialState,
@@ -38,6 +37,7 @@ export const productsSlice = createSlice({
 			.addMatcher(
 				productApi.endpoints.getAllProducts.matchPending,
 				state => {
+					console.log('Loading')
 					state.isLoading = true
 				}
 			)

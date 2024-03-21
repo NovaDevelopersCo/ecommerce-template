@@ -7,4 +7,5 @@ export default interface IProduct {
 	creationDate: string
 	cost: string
 	cover: string
+	category: string
 }

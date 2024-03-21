@@ -8,9 +8,12 @@ type TFullProductCardProps = {
 	product: IProduct
 }
 
-const FullProductCard: FC<TFullProductCardProps> = ({ product }) => (
-	// eslint-disable-next-line react/jsx-key
-	<ProductCard product={product} actions={[<AddToCartBtn />]} />
+const FullProductCard: FC<TFullProductCardProps> = async ({ product }) => (
+	<ProductCard
+		product={product}
+		// eslint-disable-next-line react/jsx-key
+		actions={[<AddToCartBtn product={product} />]}
+	/>
 )
 
 export default FullProductCard
