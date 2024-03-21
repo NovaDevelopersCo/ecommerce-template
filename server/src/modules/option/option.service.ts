@@ -1,29 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Options } from './schemas/options.schema';
 import { FileService } from '@/core/file/file.service';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginationQueryDto } from '@/core/pagination';
+import { PaginationDto, PaginationQueryDto } from '@/core/pagination';
 import { UpdateOptionsDto, CreateOptionsDto } from './dto';
 
 @Injectable()
 export class OptionService {
-  constructor (
-    @InjectModel(Options.name) private optionModel:Model<Options>,
-    private readonly fileService: FileService
+  constructor(
+    @InjectModel(Options.name) private optionModel: Model<Options>,
+    private readonly fileService: FileService,
   ) {}
 
-  async create (dto:CreateOptionsDto, image:Express.Multer.File = null) {
+  async create(dto: CreateOptionsDto, image?: Express.Multer.File) {
+    if (image) {
+      dto['image'] = await this.convertAndUpload(image);
+    }
     const option = await this.optionModel.create({
       ...dto,
-      image
-    })
-    option.save()
-    return option
+    });
+    return option;
   }
 
   async findAll({ count, page }: PaginationQueryDto) {
-    return await this.optionModel.aggregate([
+    const [{ metadata, data }] = await this.optionModel.aggregate([
       {
         $sort: {
           createdAt: 1,
@@ -36,21 +37,21 @@ export class OptionService {
         },
       },
     ]);
+    return new PaginationDto(data, metadata[0].total, count);
+  }
 
-    //const sortedProducts = this.sort(products.data);
-    //return new PaginationDto(sortedProducts, products.metadata[0].total, count);
+  // * new
+  async findOne(id: string) {
+    const option = await this.optionModel.findById(id);
+    if (!option) throw new NotFoundException();
+    return option;
   }
 
   async update(id: string, dto: UpdateOptionsDto, image?: Express.Multer.File) {
-    const option = await this.optionModel.findById(id);
+    const option = await this.findOne(id);
+    console.log(dto);
     if (image) {
-      const buffer = await this.fileService.convertToWebp(image.buffer);
-      dto['image'] = await this.fileService.uploadFile({
-        ...image,
-        buffer,
-        mimetype: 'image/webp',
-      });
-
+      dto['image'] = await this.convertAndUpload(image);
       this.fileService.deleteFile(option.image);
     }
     return this.optionModel.findOneAndUpdate(
@@ -61,8 +62,17 @@ export class OptionService {
   }
 
   async remove(id: string) {
-    const option = await this.optionModel.findById(id);
-    await this.fileService.deleteFile(option.image);
+    const option = await this.findOne(id);
+    if (option.image) this.fileService.deleteFile(option.image);
     await this.optionModel.deleteOne({ _id: id });
+  }
+
+  private async convertAndUpload(file: Express.Multer.File) {
+    const buffer = await this.fileService.convertToWebp(file.buffer);
+    return await this.fileService.uploadFile({
+      ...file,
+      buffer,
+      mimetype: 'image/webp',
+    });
   }
 }

@@ -1,40 +1,37 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsBoolean,
-  IsEmpty,
+  IsBooleanString,
   IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 
-
 class OptionsTypeDto {
   @IsString()
   valueName: string;
 
+  @IsOptional()
   @IsString()
   image: string;
 
+  @Type(() => Number)
   @IsNumber()
   sort: number;
 }
 
 export class CreateOptionsDto {
   @IsString()
-  @IsEmpty()
   name: string;
 
   @IsString()
-  @IsEmpty()
   type: string;
 
-  @IsBoolean()
-  required: boolean
+  @IsBooleanString()
+  required: boolean;
 
   @IsArray()
-  @IsEmpty()
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => OptionsTypeDto)

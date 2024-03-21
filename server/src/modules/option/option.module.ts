@@ -11,6 +11,6 @@ import { Options, OptionsSchema } from './schemas/options.schema';
     FileModule,
   ],
   providers: [OptionService],
-  controllers: [OptionController]
+  controllers: [OptionController],
 })
 export class OptionModule {}

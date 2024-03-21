@@ -1,12 +1,13 @@
 import { AbstractModel } from '@/core/abstract/abstract.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 
 class OptionsType {
   @Prop({ required: true })
   valueName: string;
 
   @Prop()
-  image: string;
+  image?: string;
 
   @Prop({ default: 0 })
   sort: number;
@@ -23,13 +24,13 @@ export class Options extends AbstractModel {
   @Prop({ default: 0 })
   sort: number;
 
-  @Prop({default: false})
-  required: boolean
+  @Prop({ default: false })
+  required: boolean;
 
-  @Prop({default: null})
-  image?: string
+  @Prop({ default: null })
+  image?: string;
 
-  @Prop({ type: () => [OptionsType], _id: true })
+  @Prop({ type: [Types.ObjectId], ref: OptionsType.name })
   options?: OptionsType[];
 }
 
