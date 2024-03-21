@@ -25,7 +25,7 @@ import {
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { FileFieldsValidator } from '@core/validators';
-import { FILE_IS_REQUERED, FILE_WITH_IMAGE_IS_REQUERED } from './constants';
+import { FILE_IS_REQUIRED, FILE_WITH_IMAGE_IS_REQUIRED } from './constants';
 import { ObjectIdValidationPipe } from '@/core/pipes/object-id.validation.pipe';
 import { RolesAuthGuard } from '@/auth/guards';
 import { Role } from '@/core/enums';
@@ -63,9 +63,9 @@ export class ProductController {
     files: { album?: Express.Multer.File[]; image: Express.Multer.File[] },
   ) {
     if (!files.image || !files.image.length){
-      throw new BadRequestException(FILE_WITH_IMAGE_IS_REQUERED);
+      throw new BadRequestException(FILE_WITH_IMAGE_IS_REQUIRED);
     }
-      
+
     return this.productService.create(dto, files.image[0], files.album);
   }
 
@@ -113,7 +113,7 @@ export class ProductController {
     files: { album: Express.Multer.File[] },
   ) {
     if (!files || !files.album.length)
-      throw new BadRequestException(FILE_IS_REQUERED);
+      throw new BadRequestException(FILE_IS_REQUIRED);
     return this.productService.updateAlbumFiles(id, files.album, type);
   }
 
