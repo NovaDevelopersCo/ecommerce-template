@@ -1,13 +1,13 @@
 import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import { TelegramService } from './telegram.service';
-import { ITelegramModuleAsynOptions } from './inteface/telegram.interface';
+import { ITelegramModuleAsyncOptions } from './inteface/telegram.interface';
 import { TELEGRAM_MODULE_OPTIONS } from './telegram.constants';
 
 @Global()
 @Module({})
 export class TelegramModule {
-  static forRootAsync(options: ITelegramModuleAsynOptions): DynamicModule {
-    const asyncOptions = this.createAsyncOptionsProvder(options);
+  static forRootAsync(options: ITelegramModuleAsyncOptions): DynamicModule {
+    const asyncOptions = this.createAsyncOptionsProvider(options);
     return {
       module: TelegramModule,
       imports: options.imports,
@@ -16,8 +16,8 @@ export class TelegramModule {
     };
   }
 
-  private static createAsyncOptionsProvder(
-    options: ITelegramModuleAsynOptions,
+  private static createAsyncOptionsProvider(
+    options: ITelegramModuleAsyncOptions,
   ): Provider {
     return {
       provide: TELEGRAM_MODULE_OPTIONS,

@@ -4,9 +4,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { LoginDto, RegistrationDto } from './dto';
-import { UserService } from 'src/modules/user/user.service';
+import { UserService } from '@modules/user/user.service';
 import { compare, genSalt, hash } from 'bcrypt';
-import { User } from 'src/modules/user/schemas/user.schema';
+import { User } from '@modules/user/schemas/user.schema';
 import { TokenService } from './token.service';
 import { USER_ALREADY_EXISTS, USER_NOT_FOUND } from './constants';
 

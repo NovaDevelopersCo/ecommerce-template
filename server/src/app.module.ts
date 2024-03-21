@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvConfigOptions, MongooseConfigService } from './configs';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ProductModule } from '@modules/product/product.module';
+import { CharacteristicModule } from './modules/characteristic/characteristic.module';
+import { OptionModule } from './modules/option/option.module';
 import { FileModule } from './core/file/file.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './modules/user/user.module';
@@ -24,9 +27,12 @@ import { getTelegramConfig } from './configs/telegram.config';
     FileModule,
     AuthModule,
     UserModule,
+    ProductModule,
+    OptionModule,
+    CharacteristicModule,
     TelegramModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigModule],
+      inject: [ConfigService],
       useFactory: getTelegramConfig,
     }),
   ],
