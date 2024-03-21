@@ -1,6 +1,6 @@
-import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
-import { CharacteristicGroup } from "./characteristic-group.schema";
-import { Types } from "mongoose";
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
+import { CharacteristicGroup } from './characteristic-group.schema';
+import { Types } from 'mongoose';
 
 @Schema()
 export class Characteristic {
@@ -10,8 +10,9 @@ export class Characteristic {
   @Prop({ default: 0 })
   sort: number;
 
-   @Prop({ type: Types.ObjectId, ref: CharacteristicGroup.name })
-  idGroup: CharacteristicGroup;
+  @Prop({ type: Types.ObjectId, ref: CharacteristicGroup.name })
+  group: CharacteristicGroup;
 }
 
-export const CharacteristicSchema = SchemaFactory.createForClass(Characteristic);
+export const CharacteristicSchema =
+  SchemaFactory.createForClass(Characteristic);

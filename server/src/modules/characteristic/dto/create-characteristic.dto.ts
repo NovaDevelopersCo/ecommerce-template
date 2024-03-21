@@ -1,8 +1,9 @@
-import { IsString, IsNumber, IsOptional } from "class-validator";
+import { IsString, IsNumber, IsOptional, IsMongoId } from 'class-validator';
 
 export class CreateCharacteristicsDto {
+  @IsMongoId()
   @IsString()
-  idGroup: string;
+  groupId: string;
 
   @IsString()
   name: string;
@@ -15,7 +16,7 @@ export class CreateCharacteristicsDto {
 export class CreateCharacteristicsGroupDto {
   @IsString()
   name: string;
-  
+
   @IsNumber()
   @IsOptional()
   sort: number;

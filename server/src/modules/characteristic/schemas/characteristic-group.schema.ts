@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class CharacteristicGroup {
@@ -9,4 +9,5 @@ export class CharacteristicGroup {
   sort: number;
 }
 
-export const CharacteristicGroupSchema = SchemaFactory.createForClass(CharacteristicGroup);
+export const CharacteristicGroupSchema =
+  SchemaFactory.createForClass(CharacteristicGroup);

@@ -1,71 +1,100 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CharacteristicService } from './characteristic.service';
 import { RolesAuthGuard } from '@/auth/guards';
 import { Role } from '@/core/enums';
-import { CreateCharacteristicsDto, CreateCharacteristicsGroupDto, UpdateCharacteristicGroupDto } from './dto';
+import {
+  CreateCharacteristicsDto,
+  CreateCharacteristicsGroupDto,
+  UpdateCharacteristicGroupDto,
+} from './dto';
 import { ObjectIdValidationPipe } from '@/core/pipes/object-id.validation.pipe';
 import { PaginationQueryDto } from '@/core/pagination';
 import { UpdateCharacteristicDto } from './dto';
 
+@UsePipes(new ValidationPipe({ whitelist: true }))
 @Controller('characteristic')
 export class CharacteristicController {
-  constructor(private readonly caracteristicService: CharacteristicService) {}
+  constructor(private readonly characteristicService: CharacteristicService) {}
 
+  // * Checked
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  @UsePipes(new ValidationPipe())
-  @RolesAuthGuard(Role.ADMIN)
-  create (@Body() dto: CreateCharacteristicsDto) {
-    return this.caracteristicService.create(dto);
+  create(@Body() dto: CreateCharacteristicsDto) {
+    return this.characteristicService.create(dto);
   }
 
+  // * Checked
   @HttpCode(HttpStatus.OK)
   @Get()
-  findAll(@Query() query:PaginationQueryDto) {
-    return this.caracteristicService.getAllCharacteristics(query);
+  findAll(@Query() query: PaginationQueryDto) {
+    return this.characteristicService.getAllCharacteristics(query);
   }
-
+  // * Checked
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   update(
     @Param('id', ObjectIdValidationPipe) id: string,
-    @Body() dto: UpdateCharacteristicDto
+    @Body() dto: UpdateCharacteristicDto,
   ) {
-    return this.caracteristicService.update(id, dto);
+    return this.characteristicService.update(id, dto);
   }
 
+  // * Checked
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   remove(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.caracteristicService.remove(id);
+    return this.characteristicService.remove(id);
   }
 
+  // * group:
+
+  // * Checked
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.CREATED)
   @Post('group')
-  @UsePipes(new ValidationPipe())
-  @RolesAuthGuard(Role.ADMIN)
-  createGroup (@Body() dto: CreateCharacteristicsGroupDto) {
-    return this.caracteristicService.createGroup(dto);
+  createGroup(@Body() dto: CreateCharacteristicsGroupDto) {
+    return this.characteristicService.createGroup(dto);
   }
 
+  // * Checked
   @HttpCode(HttpStatus.OK)
   @Get('group')
-  findAllGroup(@Query() query:PaginationQueryDto) {
-    return this.caracteristicService.getAllCharacteristicsGroup(query);
+  findAllGroup(@Query() query: PaginationQueryDto) {
+    return this.characteristicService.getAllCharacteristicsGroup(query);
   }
 
+  // * Checked
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   @Patch('group/:id')
   updateGroup(
     @Param('id', ObjectIdValidationPipe) id: string,
-    @Body() dto: UpdateCharacteristicGroupDto
+    @Body() dto: UpdateCharacteristicGroupDto,
   ) {
-    return this.caracteristicService.updateGroup(id, dto);
+    return this.characteristicService.updateGroup(id, dto);
   }
 
+  // * Checked
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('group/:id')
   removeGroup(@Param('id', ObjectIdValidationPipe) id: string) {
-    return this.caracteristicService.removeGroup(id);
+    return this.characteristicService.removeGroup(id);
   }
 }

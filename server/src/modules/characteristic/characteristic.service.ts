@@ -1,76 +1,107 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Characteristic, CharacteristicGroup } from './schemas';
 import { Model } from 'mongoose';
-import { CreateCharacteristicsDto, CreateCharacteristicsGroupDto } from './dto/create-characteristic.dto';
-import { PaginationQueryDto } from '@/core/pagination';
+import {
+  CreateCharacteristicsDto,
+  CreateCharacteristicsGroupDto,
+} from './dto/create-characteristic.dto';
+import { PaginationDto, PaginationQueryDto } from '@/core/pagination';
 import { UpdateCharacteristicDto, UpdateCharacteristicGroupDto } from './dto';
 
 @Injectable()
 export class CharacteristicService {
   constructor(
-    @InjectModel(Characteristic.name) private characteristicModel:Model<Characteristic>,
-    @InjectModel(CharacteristicGroup.name) private characteristicGroupModel:Model<CharacteristicGroup>
+    @InjectModel(Characteristic.name)
+    private characteristicModel: Model<Characteristic>,
+    @InjectModel(CharacteristicGroup.name)
+    private characteristicGroupModel: Model<CharacteristicGroup>,
   ) {}
 
-  async create (dto:CreateCharacteristicsDto) {
+  async create(dto: CreateCharacteristicsDto) {
     const characteristic = await this.characteristicModel.create({
-      ...dto
-    })
-    characteristic.save()
-    return characteristic
+      ...dto,
+      group: dto.groupId,
+    });
+    return characteristic;
   }
 
-  async getAllCharacteristics({count, page}:PaginationQueryDto) {
-    return await this.characteristicModel.aggregate([{
-      $sort:{
-        createdAt: 1
-      }
-    },
-    {
-      $facet: {
-        metadata: [{$count: 'total'}],
-        data: [{$skip: page * count - count}, {$limit: count}]
-      }
-    }])
+  async getAllCharacteristics({ count, page }: PaginationQueryDto) {
+    const [{ metadata, data }] = await this.characteristicModel.aggregate([
+      {
+        $sort: {
+          sort: 1,
+        },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: page * count - count }, { $limit: count }],
+        },
+      },
+    ]);
+    return new PaginationDto(data, metadata[0].total, count);
   }
 
-  async update (id:string, dto:UpdateCharacteristicDto) {
-    return this.characteristicModel.findOneAndUpdate({_id: id}, {...dto}, {returnDocument:'after'})
+  async findOneCharacteristic(id: string) {
+    const characteristic = await this.characteristicModel.findById(id);
+    if (!characteristic) throw new NotFoundException();
+    return characteristic;
   }
 
-  async remove (id:string) {
-    return this.characteristicModel.deleteOne({_id: id})
+  async findOneCharacteristicGroup(id: string) {
+    const charGroup = await this.characteristicGroupModel.findById(id);
+    if (!charGroup) throw new NotFoundException();
+    return charGroup;
   }
 
-  async createGroup (dto:CreateCharacteristicsGroupDto) {
-    const characteristicGroup = await this.characteristicGroupModel.create({
-      ...dto
-    })
-    
-    characteristicGroup.save()
-    return characteristicGroup
+  async update(id: string, dto: UpdateCharacteristicDto) {
+    await this.findOneCharacteristic(id);
+    return this.characteristicModel.findOneAndUpdate(
+      { _id: id },
+      { ...dto },
+      { returnDocument: 'after' },
+    );
   }
 
-  async getAllCharacteristicsGroup({count, page}:PaginationQueryDto) {
-    return await this.characteristicGroupModel.aggregate([{
-      $sort:{
-        createdAt: 1
-      }
-    },
-    {
-      $facet: {
-        metadata: [{$count: 'total'}],
-        data: [{$skip: page * count - count}, {$limit: count}]
-      }
-    }])
+  async remove(id: string) {
+    await this.findOneCharacteristic(id);
+    return this.characteristicModel.deleteOne({ _id: id });
   }
 
-  async updateGroup (id:string, dto:UpdateCharacteristicGroupDto) {
-    return this.characteristicGroupModel.findOneAndUpdate({_id: id}, {...dto}, {returnDocument:'after'})
+  async createGroup(dto: CreateCharacteristicsGroupDto) {
+    const charGroup = await this.characteristicGroupModel.create({ ...dto });
+    return charGroup;
   }
 
-  async removeGroup (id:string) {
-    return this.characteristicGroupModel.deleteOne({_id: id})
+  async getAllCharacteristicsGroup({ count, page }: PaginationQueryDto) {
+    const [{ metadata, data }] = await this.characteristicGroupModel.aggregate([
+      {
+        $sort: {
+          sort: 1,
+        },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: page * count - count }, { $limit: count }],
+        },
+      },
+    ]);
+    return new PaginationDto(data, metadata[0].total, count);
+  }
+
+  async updateGroup(id: string, dto: UpdateCharacteristicGroupDto) {
+    await this.findOneCharacteristicGroup(id);
+    return this.characteristicGroupModel.findOneAndUpdate(
+      { _id: id },
+      { ...dto },
+      { returnDocument: 'after' },
+    );
+  }
+
+  async removeGroup(id: string) {
+    await this.findOneCharacteristicGroup(id);
+    return this.characteristicGroupModel.deleteOne({ _id: id });
   }
 }
