@@ -32,7 +32,7 @@ import { getTelegramConfig } from './configs/telegram.config';
     CharacteristicModule,
     TelegramModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigModule],
+      inject: [ConfigService],
       useFactory: getTelegramConfig,
     }),
   ],
