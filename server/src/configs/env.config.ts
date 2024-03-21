@@ -15,7 +15,6 @@ export class EnvironmentVariables {
   @IsString()
   REFRESH_JWT_SECRET: string;
 
-
   //Email config
   @IsString()
   MAIL_USER: string;

@@ -10,7 +10,7 @@ import { IMail, IEmailUser } from 'src/notification/mail/interfaces';
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    private mailService:MailService
+    private mailService: MailService,
   ) {}
 
   async byEmail(email: string) {
@@ -29,16 +29,16 @@ export class UserService {
   }
 
   async sendConfirmMail(user: IEmailUser) {
-    const mailContent:IMail<IEmailUser> = {
+    const mailContent: IMail<IEmailUser> = {
       to: user.email,
       subject: 'Confirm registration', //Example
       template: 'confirmReg',
       context: {
         email: user.email,
         name: user.name,
-        phone: user.phone
-      }
-    }
-    this.mailService.emailSend(mailContent)
+        phone: user.phone,
+      },
+    };
+    this.mailService.emailSend(mailContent);
   }
 }

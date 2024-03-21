@@ -27,7 +27,7 @@ import { getTelegramConfig } from './configs/telegram.config';
     TelegramModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigModule],
-      useFactory: getTelegramConfig
+      useFactory: getTelegramConfig,
     }),
   ],
 })

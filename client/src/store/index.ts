@@ -1,6 +1,6 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit'
 
-import { productApi } from './api/ProductAPI'
+import { productApi } from './api/ProductApi'
 import { productsSlice } from './lib'
 import StoreProvider from './ui/StoreProvider'
 

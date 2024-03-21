@@ -7,9 +7,5 @@ export default function Home({
 	page: number
 	limit: number
 }) {
-	return (
-		<main>
-			<ProductsCatalog page={page} limit={limit} />
-		</main>
-	)
+	return <main>{/* <ProductsCatalog page={page} limit={limit} /> */}</main>
 }

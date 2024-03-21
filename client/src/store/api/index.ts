@@ -1,1 +1,1 @@
-export * from './ProductAPI'
+export * from './ProductApi'

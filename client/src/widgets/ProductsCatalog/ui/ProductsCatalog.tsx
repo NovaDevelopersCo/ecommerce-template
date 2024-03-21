@@ -1,3 +1,7 @@
+import { useState } from 'react'
+
+import { useGetAllProductsQuery } from '@store/index'
+
 import { IProduct } from '@entities/ProductCard'
 
 import Paggination from './@Paggination/Paggination'
@@ -12,7 +16,12 @@ const ProductsCatalog = () => {
 	// const { products, total } = await fetchAllProducts(page, limit)
 	// console.log(page)
 	const [page, setPage] = useState<number>(1)
-	const {data: products, isLoading, isError, error} = useGetAllProductsQuery(page, 5)
+	const {
+		data: products,
+		isLoading,
+		isError,
+		error
+	} = useGetAllProductsQuery(page)
 
 	return (
 		<>
