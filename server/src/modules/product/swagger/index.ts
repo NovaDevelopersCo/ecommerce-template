@@ -1,1 +1,1 @@
-export * from './createProduct'
+export * from './createProduct';
