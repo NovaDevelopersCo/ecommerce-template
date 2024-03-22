@@ -9,6 +9,8 @@ import { useGetAllProductsQuery } from '@store/index'
 
 import { IProduct } from '@entities/ProductCard'
 
+import { Loading } from '@shared/ui'
+
 import Paggination from './@Paggination/Paggination'
 import FullProductCard from './@ProductCard/FullProductCard'
 
@@ -22,16 +24,7 @@ const ProductsCatalog = () => {
 
 	const { items, total } = data
 
-	if (isLoading)
-		return (
-			<h1>
-				<Spin
-					indicator={
-						<LoadingOutlined style={{ fontSize: 24 }} spin />
-					}
-				/>
-			</h1>
-		)
+	if (isLoading) return <Loading />
 	if (isError)
 		return (
 			<h1>
