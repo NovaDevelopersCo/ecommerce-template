@@ -1,37 +1,19 @@
 'use client'
 
-import React from 'react'
+import { FC, ReactNode } from 'react'
 
 import { Carousel } from 'antd'
 
-const contentStyle: React.CSSProperties = {
-	height: '30svh',
-	color: '#fff',
-	textAlign: 'center',
-	background: '#364d79',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center'
+type TBannerProps = {
+	slides: ReactNode[]
 }
 
-const Banner = () => {
-	const onChange = (currentSlide: number) => {
-		console.log(currentSlide)
-	}
+const Banner: FC<TBannerProps> = ({ slides }) => {
 	return (
-		<Carousel afterChange={onChange} autoplay>
-			<div>
-				<h3 style={contentStyle}>1</h3>
-			</div>
-			<div>
-				<h3 style={contentStyle}>2</h3>
-			</div>
-			<div>
-				<h3 style={contentStyle}>3</h3>
-			</div>
-			<div>
-				<h3 style={contentStyle}>4</h3>
-			</div>
+		<Carousel autoplay>
+			{slides.map((slide, idx) => (
+				<div key={idx}>{slide}</div>
+			))}
 		</Carousel>
 	)
 }

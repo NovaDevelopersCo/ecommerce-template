@@ -1,6 +1,6 @@
 import { ConfigModuleOptions } from '@nestjs/config';
 import { IsNumber, IsString } from 'class-validator';
-import { envValidate } from 'src/core/utils';
+import { envValidate } from '@core/utils';
 
 export class EnvironmentVariables {
   @IsNumber()
@@ -14,6 +14,29 @@ export class EnvironmentVariables {
 
   @IsString()
   REFRESH_JWT_SECRET: string;
+
+  //Email config
+  @IsString()
+  MAIL_USER: string;
+
+  @IsString()
+  MAIL_PASS: string;
+
+  @IsString()
+  MAIL_HOST: string;
+
+  @IsString()
+  MAIL_FROM_NAME: string;
+
+  @IsString()
+  MAIL_FROM_EMAIL: string;
+
+  //Telegramm config
+  @IsString()
+  TELEGRAF_API: string;
+
+  @IsString()
+  CHAT_ID: string;
 }
 
 export const EnvConfigOptions: ConfigModuleOptions = {

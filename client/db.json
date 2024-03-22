@@ -1,0 +1,76 @@
+{
+	"products": [
+		{
+			"id": "product-1",
+			"name": "Example Product 1",
+			"description": "This is an example product with standard features.",
+			"creationDate": "2021-10-01",
+			"cost": "$100",
+			"cover": "https://dummyimage.com/300x700/ccc/000.jpg?text=item",
+			"category": "category-1"
+		},
+		{
+			"id": "product-2",
+			"name": "Premium Product 2",
+			"description": "This is a premium product with advanced features and superior quality.",
+			"creationDate": "2021-08-15",
+			"cost": "$500",
+			"cover": "https://dummyimage.com/300x700/ccc/000.jpg?text=item",
+			"category": "category-1"
+		},
+		{
+			"id": "product-3",
+			"name": "Basic Product 3",
+			"description": "This is a basic product with fundamental features.",
+			"creationDate": "2022-03-20",
+			"cost": "$30",
+			"cover": "https://dummyimage.com/300x700/ccc/000.jpg?text=item",
+			"category": "category-1"
+		},
+		{
+			"id": "product-4",
+			"name": "Basic Product 4",
+			"description": "This is a basic product with fundamental features.",
+			"creationDate": "2022-03-20",
+			"cost": "$30",
+			"cover": "https://dummyimage.com/300x700/ccc/000.jpg?text=item",
+			"category": "category-1"
+		},
+		{
+			"id": "product-5",
+			"name": "Basic Product 5",
+			"description": "This is a basic product with fundamental features.",
+			"creationDate": "2022-03-20",
+			"cost": "$30",
+			"cover": "https://dummyimage.com/300x700/ccc/000.jpg?text=item",
+			"category": "category-1"
+		},
+		{
+			"id": "product-6",
+			"name": "Basic Product 6",
+			"description": "This is a basic product with fundamental features.",
+			"creationDate": "2022-03-20",
+			"cost": "$30",
+			"cover": "https://dummyimage.com/300x700/ccc/000.jpg?text=item",
+			"category": "category-2"
+		},
+		{
+			"id": "product-7",
+			"name": "Basic Product 7",
+			"description": "This is a basic product with fundamental features.",
+			"creationDate": "2022-03-20",
+			"cost": "$30",
+			"cover": "https://dummyimage.com/300x700/ccc/000.jpg?text=item",
+			"category": "category-2"
+		},
+		{
+			"id": "product-8",
+			"name": "Basic Product 8",
+			"description": "This is a basic product with fundamental features.",
+			"creationDate": "2022-03-20",
+			"cost": "$30",
+			"cover": "https://dummyimage.com/300x700/ccc/000.jpg?text=item",
+			"category": "category-2"
+		}
+	]
+}

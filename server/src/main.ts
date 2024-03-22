@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { SwaggerModule } from '@nestjs/swagger';
-import { configSwagger } from './configs';
+import { configSwagger } from '@config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
