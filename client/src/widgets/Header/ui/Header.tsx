@@ -50,7 +50,7 @@ const Header = () => {
 				<nav className='flex flex-row gap-x-6 items-center md:contents'>
 					<ul
 						className={clsx(
-							'md:z-100 -z-10 flex justify-around md:bg-transparent backdrop-blur-sm md:w-fit md:h-auto gap-x-4 md:flex-row flex-col md:relative fixed top-0 left-0 md:translate-y-0 w-screen h-screen items-center',
+							'-z-10 md:z-10 flex justify-around md:bg-transparent backdrop-blur-sm md:w-fit md:h-auto gap-x-4 md:flex-row flex-col md:relative fixed top-0 left-0 md:translate-y-0 w-screen h-screen items-center',
 							!isBurgerActive && '-translate-y-full'
 						)}
 						onClick={() => setIsBurgerActive(false)}
