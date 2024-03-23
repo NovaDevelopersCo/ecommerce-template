@@ -85,6 +85,7 @@ export class ProductController {
     return this.productService.findOne(id);
   }
 
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('image'))
   @Patch(':id')
@@ -105,6 +106,7 @@ export class ProductController {
     return this.productService.update(id, dto, file);
   }
 
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileFieldsInterceptor([{ name: 'album', maxCount: 10 }]))
   @Patch('album/:id')
@@ -122,6 +124,7 @@ export class ProductController {
     return this.productService.updateAlbumFiles(id, files.album, type);
   }
 
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   remove(@Param('id', ObjectIdValidationPipe) id: string) {
