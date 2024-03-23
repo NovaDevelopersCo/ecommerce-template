@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Options } from './schemas/options.schema';
+import { Option } from './schemas/option.schema';
 import { FileService } from '@/core/file/file.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginationDto, PaginationQueryDto } from '@/core/pagination';
@@ -9,7 +9,7 @@ import { UpdateOptionsDto, CreateOptionsDto } from './dto';
 @Injectable()
 export class OptionService {
   constructor(
-    @InjectModel(Options.name) private optionModel: Model<Options>,
+    @InjectModel(Option.name) private optionModel: Model<Option>,
     private readonly fileService: FileService,
   ) {}
 
@@ -17,9 +17,7 @@ export class OptionService {
     if (image) {
       dto['image'] = await this.convertAndUpload(image);
     }
-    const option = await this.optionModel.create({
-      ...dto,
-    });
+    const option = await this.optionModel.create(dto);
     return option;
   }
 
