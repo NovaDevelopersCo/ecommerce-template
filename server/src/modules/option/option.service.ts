@@ -15,7 +15,7 @@ export class OptionService {
 
   async create(dto: CreateOptionsDto, image?: Express.Multer.File) {
     if (image) {
-      dto['image'] = await this.convertAndUpload(image);
+      dto['image'] = await this.fileService.convertAndUpload(image);
     }
     const option = await this.optionModel.create(dto);
     return option;
@@ -54,7 +54,7 @@ export class OptionService {
     const option = await this.findOne(id);
     console.log(dto);
     if (image) {
-      dto['image'] = await this.convertAndUpload(image);
+      dto['image'] = await this.fileService.convertAndUpload(image);
       this.fileService.deleteFile(option.image);
     }
     return this.optionModel.findOneAndUpdate(
@@ -68,14 +68,5 @@ export class OptionService {
     const option = await this.findOne(id);
     if (option.image) this.fileService.deleteFile(option.image);
     await this.optionModel.deleteOne({ _id: id });
-  }
-
-  private async convertAndUpload(file: Express.Multer.File) {
-    const buffer = await this.fileService.convertToWebp(file.buffer);
-    return await this.fileService.uploadFile({
-      ...file,
-      buffer,
-      mimetype: 'image/webp',
-    });
   }
 }
