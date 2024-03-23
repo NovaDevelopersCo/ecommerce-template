@@ -38,7 +38,7 @@ const ProductsCatalog = () => {
 			>
 				{(data.count != 0 &&
 					data?.items?.map((product: IProduct) => (
-						<FullProductCard product={product} key={product.id} />
+						<FullProductCard product={product} key={product._id} />
 					))) ||
 					'No products'}
 			</div>

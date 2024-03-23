@@ -25,7 +25,7 @@ export default function RootLayout({ children }: PropsWithChildren<unknown>) {
 		<html lang='en'>
 			<body className={roboto.className}>
 				<AppProvider>
-					<div className='flex flex-col justify-top min-h-screen align-center'>
+					<div className='flex flex-col justify-top min-h-screen w-full align-center'>
 						<Header />
 						<div className='p-5 h-full'>
 							<main>{children}</main>

@@ -48,7 +48,7 @@ const Header = () => {
 	}
 
 	return (
-		<header className='w-screen sticky p-5 z-100'>
+		<header className='w-full sticky p-5 z-100'>
 			<div className='flex flex-row justify-between items-center gap-x-6'>
 				<div>
 					<h1>Logo</h1>
@@ -105,9 +105,12 @@ const Header = () => {
 							</Button>
 						) : (
 							<>
-								<button className='md:order-none order-2'>
+								<Link
+									href='/cart'
+									className='md:order-none order-2'
+								>
 									Cart
-								</button>
+								</Link>
 								<button className='flex flex-row items-center gap-x-2'>
 									<p className='lg:block hidden'>
 										{session.user?.name}

@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import { useGetProductByIdQuery } from '@store/index'
 
-import {Loading} from '@shared/ui'
+import { Loading } from '@shared/ui'
 
 export default function Page({ params }: { params: { productId: string } }) {
 	const { productId } = params
