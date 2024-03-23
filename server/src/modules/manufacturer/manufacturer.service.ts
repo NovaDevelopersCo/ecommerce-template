@@ -14,7 +14,7 @@ export class ManufacturerService {
     private readonly fileService: FileService,
   ) {}
   async create(dto: CreateManufacturerDto, logo?: Express.Multer.File) {
-    if (logo) dto['logo'] = await this.convertAndUpload(logo);
+    if (logo) dto['logo'] = await this.fileService.convertAndUpload(logo);
     const manufacturer = await this.manufacturerModel.create(dto);
     return manufacturer;
   }
@@ -58,7 +58,7 @@ export class ManufacturerService {
       if (manufacturer.logo) {
         await this.fileService.deleteFile(manufacturer.logo);
       }
-      newLogo = await this.convertAndUpload(logo);
+      newLogo = await this.fileService.convertAndUpload(logo);
     }
 
     return this.manufacturerModel.findOneAndUpdate(
@@ -72,14 +72,5 @@ export class ManufacturerService {
     const manufacturer = await this.findOne(id);
     if (manufacturer.logo) await this.fileService.deleteFile(manufacturer.logo);
     await this.manufacturerModel.deleteOne({ _id: id });
-  }
-
-  private async convertAndUpload(file: Express.Multer.File) {
-    const buffer = await this.fileService.convertToWebp(file.buffer);
-    return await this.fileService.uploadFile({
-      ...file,
-      buffer,
-      mimetype: 'image/webp',
-    });
   }
 }
