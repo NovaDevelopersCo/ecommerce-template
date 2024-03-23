@@ -35,6 +35,9 @@ export class OptionService {
         },
       },
     ]);
+    if (!metadata.length) {
+      return new PaginationDto([], 0, count);
+    }
     return new PaginationDto(data, metadata[0].total, count);
   }
 
