@@ -10,6 +10,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.setGlobalPrefix('api');
+  app.enableCors({
+    origin: '*',
+  });
   const configService = app.get(ConfigService);
   const logger = new Logger();
   const PORT = configService.get('PORT');

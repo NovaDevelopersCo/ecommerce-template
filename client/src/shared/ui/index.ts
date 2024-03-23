@@ -1,1 +1,3 @@
-import Loading from './Loading'
+import Loading from './Loading/Loading'
+
+export {Loading}

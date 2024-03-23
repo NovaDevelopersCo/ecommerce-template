@@ -1,6 +1,7 @@
 type TServerResponse<T> = {
 	items: T
-	total: number
+	count: number
+	pageCount: number
 }
 
 export type { TServerResponse }

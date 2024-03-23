@@ -1,5 +1,3 @@
-'use client'
-
 import { Dispatch, FC, SetStateAction } from 'react'
 
 import { Pagination } from 'antd'
@@ -18,7 +16,6 @@ const Paggination: FC<TPagginationProps> = ({
 	total,
 	setPage
 }) => {
-	const router = useRouter()
 	return (
 		<Pagination
 			defaultCurrent={1}
@@ -28,7 +25,6 @@ const Paggination: FC<TPagginationProps> = ({
 			hideOnSinglePage
 			onChange={(page, pageSize) => {
 				setPage(page)
-				// router.push(`?_limit=${pageSize}&page=${page}`)
 			}}
 		/>
 	)

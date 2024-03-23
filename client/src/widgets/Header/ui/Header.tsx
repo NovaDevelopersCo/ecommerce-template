@@ -21,15 +21,15 @@ const Header = () => {
 	const items: MenuProps['items'] = [
 		{
 			key: '1',
-			label: <Link href='/catalog/child'>Child</Link>
+			label: <Link href='/catalog/category/child'>Child</Link>
 		},
 		{
 			key: '2',
-			label: <Link href='/catalog/men'>Mens</Link>
+			label: <Link href='/catalog/category/men'>Mens</Link>
 		},
 		{
 			key: '3',
-			label: <Link href='/catalog/women'>Women</Link>
+			label: <Link href='/catalog/category/women'>Women</Link>
 		}
 	]
 

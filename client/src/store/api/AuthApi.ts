@@ -64,7 +64,6 @@ export const authApi = createApi({
 	reducerPath: 'api/auth',
 	baseQuery: baseQueryWithReauth,
 	tagTypes: ['Auth'],
-
 	endpoints: build => ({
 		registrateUser: build.query<TSuccessUserResp, TRegistrateUserDto>({
 			query: user => ({

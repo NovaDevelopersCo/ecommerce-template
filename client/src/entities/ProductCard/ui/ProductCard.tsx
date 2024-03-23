@@ -1,11 +1,14 @@
-// 'use client'
+'use client'
+
 import { FC, PropsWithChildren, ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Card, Skeleton } from 'antd'
 import Meta from 'antd/es/card/Meta'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
-import { IProduct } from '../model'
+import { IProduct } from '@store/index'
 
 /**
  * The type `TProductCardProps` defines the props expected by a product card component in a TypeScript
@@ -19,19 +22,19 @@ import { IProduct } from '../model'
  */
 type TProductCardProps = {
 	product: IProduct
-	actions: ReactNode[] | undefined
+	actions?: ReactNode[]
 }
 
 const ProductCard: FC<PropsWithChildren<TProductCardProps>> = ({
 	product,
 	actions
 }) => {
-	// const [loading, setLoading] = useState(true)
-	// const router = useRouter()
+	const [loading, setLoading] = useState(true)
+	const router = useRouter()
 
-	// useEffect(() => {
-	// 	setLoading(false)
-	// }, [])
+	useEffect(() => {
+		setLoading(false)
+	}, [])
 
 	return (
 		<Card
@@ -39,23 +42,24 @@ const ProductCard: FC<PropsWithChildren<TProductCardProps>> = ({
 			hoverable
 			cover={
 				<Image
-					src={product.cover}
+					src={`${process.env.NEXT_PUBLIC_SERVER_URL}/file/${product.image}`}
 					alt={product.name}
 					width={300}
 					height={300}
-					style={{ maxHeight: '50svh', objectFit: 'cover' }}
+					style={{
+						maxHeight: '50svh',
+						objectFit: 'cover',
+						maxWidth: '100%'
+					}}
 				/>
 			}
-			// onClick={() => {
-			// router.replace(`/catalog/${product.category}/${product.id}`)
-			// }}
+			onClick={() => {
+				router.replace(`/catalog/${product._id}`)
+			}}
 		>
-			{/* <Skeleton
-				loading={loading}
-				active
-			> */}
-			<Meta title={product.name} description={product.description} />
-			{/* </Skeleton> */}
+			<Skeleton loading={loading} active>
+				<Meta title={product.name} description={product.description} />
+			</Skeleton>
 		</Card>
 	)
 }
