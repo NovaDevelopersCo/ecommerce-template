@@ -6,7 +6,7 @@ import {
   ManufacturerSchema,
 } from './schemas/manufacturer.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { FileModule } from 'src/core/file/file.module';
+import { FileModule } from '@core/file/file.module';
 
 @Module({
   imports: [

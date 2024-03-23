@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { AbstractModel } from 'src/core/abstract/abstract.schema';
+import { AbstractModel } from '@core/abstract/abstract.schema';
 
 @Schema()
 export class Manufacturer extends AbstractModel {
@@ -22,9 +22,6 @@ export class Manufacturer extends AbstractModel {
   @ApiProperty({ required: false, description: 'Img link' })
   @Prop()
   logo?: string;
-
-  // *
-  //* products:
 }
 
 export const ManufacturerSchema = SchemaFactory.createForClass(Manufacturer);

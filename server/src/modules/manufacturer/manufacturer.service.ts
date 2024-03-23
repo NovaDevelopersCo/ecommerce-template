@@ -3,7 +3,7 @@ import { CreateManufacturerDto, UpdateManufacturerDto } from './dto';
 import { Manufacturer } from './schemas/manufacturer.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { FileService } from 'src/core/file/file.service';
+import { FileService } from '@core/file/file.service';
 
 @Injectable()
 export class ManufacturerService {
