@@ -14,11 +14,14 @@ import {
   ValidationPipe,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ManufacturerService } from './manufacturer.service';
 import { CreateManufacturerDto, UpdateManufacturerDto } from './dto';
 import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiConsumes,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -28,6 +31,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Manufacturer } from './schemas/manufacturer.schema';
+import { RolesAuthGuard } from '@/auth/guards';
+import { Role } from '@/core/enums';
+import { PaginationQueryDto } from '@/core/pagination';
+import { ReturnPaginationManufacturerDto } from './swagger';
+import { ObjectIdValidationPipe } from '@/core/pipes/object-id.validation.pipe';
 
 @ApiTags('manufacturer')
 @UsePipes(new ValidationPipe({ whitelist: true }))
@@ -39,7 +47,10 @@ export class ManufacturerController {
     type: Manufacturer,
   })
   @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiBadRequestResponse({ description: 'Validation error message' })
   @ApiConsumes('multipart/form-data')
+  @ApiBearerAuth()
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('logo'))
   @Post()
@@ -58,34 +69,41 @@ export class ManufacturerController {
     return this.manufacturerService.create(dto, logo);
   }
 
-  // TODO: add later
+  @ApiOkResponse({
+    type: ReturnPaginationManufacturerDto,
+  })
+  @ApiBadRequestResponse({ description: 'Validation error message' })
   @HttpCode(HttpStatus.OK)
   @Get()
-  findAll() {
-    return this.manufacturerService.findAll();
+  findAll(@Query() query: PaginationQueryDto) {
+    return this.manufacturerService.findAll(query);
   }
 
   @ApiOkResponse({
     type: Manufacturer,
   })
   @ApiNotFoundResponse({ description: 'Not Found' })
+  @ApiBadRequestResponse({ description: 'Validation error message' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.manufacturerService.findOne(id);
   }
 
   @ApiOkResponse({
     type: Manufacturer,
   })
+  @ApiBearerAuth()
   @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiBadRequestResponse({ description: 'Validation error message' })
   @ApiNotFoundResponse({ description: 'Not Found' })
   @ApiConsumes('multipart/form-data')
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('logo'))
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ObjectIdValidationPipe) id: string,
     @Body() updateManufacturerDto: UpdateManufacturerDto,
     @UploadedFile(
       new ParseFilePipe({
@@ -99,11 +117,14 @@ export class ManufacturerController {
   }
 
   @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiBadRequestResponse({ description: 'Validation error message' })
   @ApiNotFoundResponse({ description: 'Not Found' })
   @ApiNoContentResponse({ description: 'No content' })
+  @ApiBearerAuth()
+  @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ObjectIdValidationPipe) id: string) {
     return this.manufacturerService.remove(id);
   }
 }
