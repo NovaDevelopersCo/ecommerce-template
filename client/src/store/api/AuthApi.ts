@@ -22,7 +22,7 @@ export type TRegistrateUserDto = Pick<IUser, 'email' | 'password' | 'name'>
 export type TLoginUserDto = Pick<IUser, 'email' | 'password'>
 
 const baseQuery = fetchBaseQuery({
-	baseUrl: `${import.meta.env.VITE_SERVER_URL}/auth`,
+	baseUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/auth`,
 	credentials: 'same-origin',
 	prepareHeaders: headers => {
 		const token = localStorage.getItem('token')

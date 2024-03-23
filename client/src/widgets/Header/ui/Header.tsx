@@ -2,15 +2,21 @@
 
 import { useState } from 'react'
 
-import { AutoComplete, Dropdown, MenuProps } from 'antd'
+import { AutoComplete, Button, Dropdown, MenuProps } from 'antd'
 import clsx from 'clsx'
 import { Menu } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const Header = () => {
-	const [search, setSearch] = useState<string>('')
+	const [search, setSearch] = useState<string>()
 	const [options, setOptions] = useState<DefaultOptionType[]>([])
 	const [isBurgerActive, setIsBurgerActive] = useState<boolean>(false)
+
+	const { data: session } = useSession()
+	const router = useRouter()
 
 	const items: MenuProps['items'] = [
 		{
@@ -43,7 +49,7 @@ const Header = () => {
 
 	return (
 		<header className='w-screen sticky p-5 z-100'>
-			<div className='flex flex-row justify-between items-center'>
+			<div className='flex flex-row justify-between items-center gap-x-6'>
 				<div>
 					<h1>Logo</h1>
 				</div>
@@ -66,8 +72,7 @@ const Header = () => {
 						</div>
 					</ul>
 
-					<div className='flex flex-row gap-x-6'>
-						<button className='md:order-none order-2'>Cart</button>
+					<div className='flex flex-row gap-x-6 items-center'>
 						<form
 							action={''}
 							className='flex flex-row items-center'
@@ -78,6 +83,8 @@ const Header = () => {
 								}}
 								options={options}
 								onSearch={handleSearch}
+								onChange={e => setSearch(e.target?.value)}
+								value={search}
 								placeholder='Find something here ...'
 								filterOption={(inputValue, option) =>
 									option!.value
@@ -88,6 +95,37 @@ const Header = () => {
 							/>
 						</form>
 
+						{!session ? (
+							<Button
+								onMouseDown={() => {
+									router.push('/api/auth/signin')
+								}}
+							>
+								Sing in/Sign up
+							</Button>
+						) : (
+							<>
+								<button className='md:order-none order-2'>
+									Cart
+								</button>
+								<button className='flex flex-row items-center gap-x-2'>
+									<p className='lg:block hidden'>
+										{session.user?.name}
+									</p>
+									{/* <p>{session.user?.email}</p> */}
+									<Image
+										src={session.user?.image as string}
+										width='50'
+										height='50'
+										alt=''
+										className='object-cover rounded-full'
+									/>
+								</button>
+								<Button onMouseDown={() => signOut()}>
+									Logout
+								</Button>
+							</>
+						)}
 						<button
 							className='md:hidden block order-last'
 							onClick={() => setIsBurgerActive(prev => !prev)}
