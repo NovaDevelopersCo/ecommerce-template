@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export abstract class ReturnPaginationAbstractDto {
-  @ApiProperty()
+  @ApiProperty({ required: false })
   count: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   pageCount: number;
 }
