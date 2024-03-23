@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, HTMLAttributes } from 'react'
 
 import { Button } from 'antd'

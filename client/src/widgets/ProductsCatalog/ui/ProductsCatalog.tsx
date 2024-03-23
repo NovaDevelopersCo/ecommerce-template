@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types'
+import { LoadingOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
 
 import { useGetAllProductsQuery } from '@store/index'
 
@@ -12,49 +12,34 @@ import { IProduct } from '@entities/ProductCard'
 import Paggination from './@Paggination/Paggination'
 import FullProductCard from './@ProductCard/FullProductCard'
 
-type TServerSideProps = {
-	data: IProduct[] | undefined
-	error: FetchBaseQueryError | undefined
-	isError: boolean
-	isLoading: boolean
-}
-
-// SSR request
-// eslint-disable-next-line react-refresh/only-export-components
-// export const getServerSideProps = (async () => {
-// 	const { data, error, isLoading, isError,  } = useGetAllProductsQuery({
-// 		page: 1,
-// 		limit: 12
-// 	})
-
-// 	return { props: { data, error, isError, isLoading } }
-// }) satisfies GetServerSideProps<TServerSideProps>
-/**
- * {
-	data,
-	error,
-	isError,
-	isLoading
-}: InferGetServerSidePropsType<typeof getServerSideProps>
- */
-
 const ProductsCatalog = () => {
 	const [page, setPage] = useState<number>(1)
-	const [limit, setLimit] = useState<number>(12)
-	const { data, error, isLoading, isError } = useGetAllProductsQuery({
-		page: page,
-		limit: limit
+	const [limit, setLimit] = useState<number>(6)
+	const { data, isLoading, isError, error } = useGetAllProductsQuery({
+		page,
+		limit
 	})
-	if (isError && (error as FetchBaseQueryError))
+
+	const { items, total } = data
+
+	if (isLoading)
 		return (
 			<h1>
-				{error.status} {JSON.stringify(error.data)}
+				<Spin
+					indicator={
+						<LoadingOutlined style={{ fontSize: 24 }} spin />
+					}
+				/>
 			</h1>
 		)
-	if (isLoading) return <h1>Loading ...</h1>
-
+	if (isError)
+		return (
+			<h1>
+				{error?.status}. {error?.message}
+			</h1>
+		)
 	return (
-		<div>
+		<>
 			<div
 				style={{
 					display: 'grid',
@@ -63,12 +48,17 @@ const ProductsCatalog = () => {
 					gap: '10px'
 				}}
 			>
-				{data?.map(product => (
+				{products?.map((product: IProduct) => (
 					<FullProductCard product={product} key={product.id} />
 				)) || 'No products'}
 			</div>
-			{/* <Paggination page={page} /> */}
-		</div>
+			<Paggination
+				page={page}
+				limit={limit}
+				total={total}
+				setPage={setPage}
+			/>
+		</>
 	)
 }
 

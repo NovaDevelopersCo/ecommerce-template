@@ -3,6 +3,9 @@ import { PropsWithChildren } from 'react'
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 
+import { Footer } from '@widgets/Footer'
+import { Header } from '@widgets/Header'
+
 import AppProvider from './AppProvider'
 import './globals.scss'
 
@@ -21,12 +24,15 @@ export default function RootLayout({ children }: PropsWithChildren<unknown>) {
 	return (
 		<html lang='en'>
 			<body className={roboto.className}>
-				<AppProvider>
-					<div className='p-2'>
-						Root Layout
-						{children}
+				<div className='flex flex-col justify-top min-h-screen align-center'>
+					<Header />
+					<div className='p-5 h-full'>
+						<AppProvider>
+							<main>{children}</main>
+						</AppProvider>
 					</div>
-				</AppProvider>
+					<Footer />
+				</div>
 			</body>
 		</html>
 	)
