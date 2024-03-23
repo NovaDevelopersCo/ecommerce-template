@@ -12,6 +12,8 @@ import { getMailConfig } from './configs/mail.config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { TelegramModule } from './notification/telegram/telegram.module';
 import { getTelegramConfig } from './configs/telegram.config';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -34,6 +36,10 @@ import { getTelegramConfig } from './configs/telegram.config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: getTelegramConfig,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'),
+      serveRoot: '/file',
     }),
   ],
 })
