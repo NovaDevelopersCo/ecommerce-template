@@ -22,7 +22,7 @@ export class OptionService {
   }
 
   async findAll({ count, page }: PaginationQueryDto) {
-    const [{ metadata, data }] = await this.optionModel.aggregate([
+    const [aggregateData] = await this.optionModel.aggregate([
       {
         $sort: {
           createdAt: 1,
@@ -35,7 +35,9 @@ export class OptionService {
         },
       },
     ]);
-    if (!metadata.length) {
+
+    const { metadata, data } = aggregateData;
+    if (!metadata || !metadata.length) {
       return new PaginationDto([], 0, count);
     }
     return new PaginationDto(data, metadata[0].total, count);
