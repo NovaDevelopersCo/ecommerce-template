@@ -2,61 +2,62 @@ import { ApiProperty } from '@nestjs/swagger';
 
 class CharacteristicProduct {
   @ApiProperty()
-  idCharacteristic: string
+  characteristicId: string;
   @ApiProperty()
-  value: string
+  value: string;
 }
 
 class OptionsProduct {
   @ApiProperty()
-  idOption: string
+  optionId: string;
   @ApiProperty()
-  optionValue: string
+  optionValue: string;
   @ApiProperty()
-  quantity: number
+  quantity: number;
   @ApiProperty()
-  price: number
+  price: number;
   @ApiProperty()
-  pricePrefix: string
+  pricePrefix: string;
 }
 
 export class CreateProduct {
   @ApiProperty()
-  name: string
+  name: string;
 
   @ApiProperty()
-  tags: string[]
+  tags: string[];
 
   @ApiProperty()
-  stock: number
+  stock: number;
 
   @ApiProperty()
-  description: string
+  description: string;
 
   @ApiProperty()
-  price: number
+  price: number;
 
   @ApiProperty()
-  image: string
+  image: string;
 
-  @ApiProperty({isArray:true, type:CharacteristicProduct})
-  characteristics: CharacteristicProduct[]
+  @ApiProperty({ isArray: true, type: CharacteristicProduct })
+  characteristics: CharacteristicProduct[];
 
-  @ApiProperty({isArray:true, type: OptionsProduct})
-  options: OptionsProduct[]
-
-  @ApiProperty()
-  _id: string
+  @ApiProperty({ isArray: true, type: OptionsProduct })
+  options: OptionsProduct[];
 
   @ApiProperty()
-  createdAt: string
+  _id: string;
 
   @ApiProperty()
-  updatedAt: string
+  createdAt: string;
 
   @ApiProperty()
-  __v: number
+  updatedAt: string;
+
+  // ! Можно не указывать :)
+  @ApiProperty()
+  __v: number;
 
   @ApiProperty()
-  slug: string
+  slug: string;
 }

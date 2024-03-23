@@ -5,19 +5,14 @@ import {
   PaginationProductQuery,
 } from './dto';
 import { InjectModel } from '@nestjs/mongoose';
-import {
-  Product,
-  ProductAlbum,
-} from './schemas/product.schema';
-import { Document, Model } from 'mongoose';
+import { Product } from './schemas/product.schema';
+import { Model } from 'mongoose';
 import { FileService } from '@/core/file/file.service';
 import * as generateSlug from 'slug';
 import { PaginationDto } from '@/core/pagination';
 import { TypeReplaceEnum } from '@/core/enums/type-replace.enum';
-
-type TypeProductForSort = Document<unknown, object, Product> &
-  Product &
-  Required<{ _id: string }>;
+import { Option } from '../option/schemas/option.schema';
+import { Characteristic, CharacteristicGroup } from '../characteristic/schemas';
 
 @Injectable()
 export class ProductService {
@@ -51,15 +46,21 @@ export class ProductService {
       album: album,
     });
     product.slug = generateSlug(product.name + '-' + product._id);
-    product.save();
+    await product.save();
     return product;
   }
 
   async findAll({ count, page }: PaginationProductQuery) {
-    const [products] = await this.productModel.aggregate([
+    const [aggregateData] = await this.productModel.aggregate([
       {
         $sort: {
           createdAt: 1,
+        },
+      },
+      {
+        $project: {
+          options: 0,
+          characteristics: 0,
         },
       },
       {
@@ -69,17 +70,26 @@ export class ProductService {
         },
       },
     ]);
-
-    const sortedProducts = this.sort(products.data);
-    return new PaginationDto(sortedProducts, products.metadata[0].total, count);
+    const { metadata, data } = aggregateData;
+    if (!metadata || !metadata.length) {
+      return new PaginationDto([], 0, count);
+    }
+    return new PaginationDto(data, metadata[0].total, count);
   }
 
-  async findOne(id: string, isSort: boolean = false) {
-    const product = await this.productModel.findById(id);
+  async findOne(id: string) {
+    const product = await this.productModel
+      .findById(id)
+      .populate('options.option', {}, Option.name)
+      .populate({
+        path: 'characteristics.characteristic',
+        model: Characteristic.name,
+        populate: {
+          path: 'group',
+          model: CharacteristicGroup.name,
+        },
+      });
     if (!product) throw new NotFoundException();
-    if (isSort) {
-      return this.sort([product])[0];
-    }
     return product;
   }
 
@@ -103,7 +113,6 @@ export class ProductService {
     type: TypeReplaceEnum = TypeReplaceEnum.ALL,
   ) {
     const product = await this.findOne(id);
-
     let album;
     if (type === TypeReplaceEnum.ALL) {
       album = await Promise.all(
@@ -131,7 +140,6 @@ export class ProductService {
       );
       album = [...product.album, ...newAlbum];
     }
-
     product.album = album;
     return product.save();
   }
@@ -145,23 +153,6 @@ export class ProductService {
     );
     await this.fileService.deleteFile(product.image);
     await this.productModel.deleteOne({ _id: id });
-  }
-
-  private sort<T extends TypeProductForSort>(products: T[]): T[] {
-    const sorted = products.map((product) => {
-      // if(product.characteristics) {
-      //     product.characteristics = product.characteristics.sort(
-      //     (a: Characteristic, b: Characteristic) =>
-      //       a.sort - b.sort,
-      //   );
-      // }
-      product.album = product.album.sort(
-        (a: ProductAlbum, b: ProductAlbum) => a.sort - b.sort,
-      );
-      return product;
-    });
-
-    return sorted;
   }
 
   private async convertAndUpload(file: Express.Multer.File) {

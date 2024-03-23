@@ -10,35 +10,37 @@ import {
 } from 'class-validator';
 
 export class CreateCharacteristicsDto {
-  @ApiProperty({required:false})
-  @IsString()
-  idCaracteristic: string
+  @ApiProperty({ required: false })
+  @IsMongoId()
+  characteristic: string;
 
-  @ApiProperty({required:false})
+  @ApiProperty({ required: false })
   @IsString()
-  value:string
+  value: string;
 }
 
 class CreateOptionsDto {
-  @ApiProperty({required:false})
-  @IsString()
-  idOption: string
+  @ApiProperty({ required: false })
+  @IsMongoId()
+  option: string;
 
-  @ApiProperty({required:false})
+  @ApiProperty({ required: false })
   @IsString()
-  optionValue: string
+  value: string;
 
-  @ApiProperty({required:false})
+  @ApiProperty({ required: false })
+  @Type(() => Number)
   @IsNumber()
-  quantity: number
+  quantity: number;
 
-  @ApiProperty({required:false})
+  @ApiProperty({ required: false })
+  @Type(() => Number)
   @IsNumber()
-  price: number
+  price: number;
 
-  @ApiProperty({required:false})
+  @ApiProperty({ required: false })
   @IsString()
-  pricePrefix:string
+  pricePrefix: string;
 }
 
 export class CreateProductDto {
@@ -65,7 +67,7 @@ export class CreateProductDto {
   @Type(() => Number)
   stock: number;
 
-  @ApiProperty({required:false})
+  @ApiProperty({ required: false })
   @IsArray()
   @IsOptional()
   tags: string[];
@@ -76,16 +78,21 @@ export class CreateProductDto {
   @IsArray()
   categories: string[];
 
-  @ApiProperty({type:CreateCharacteristicsDto, isArray:true, required:false})
+  @ApiProperty({
+    type: CreateCharacteristicsDto,
+    isArray: true,
+    required: false,
+  })
   @IsOptional()
   @IsArray()
-  //@ValidateNested({ each: true })
+  @ValidateNested({ each: true })
   @Type(() => CreateCharacteristicsDto)
   characteristics?: CreateCharacteristicsDto[];
 
-  @ApiProperty({type:CreateOptionsDto, isArray:true, required: false})
+  @ApiProperty({ type: CreateOptionsDto, isArray: true, required: false })
   @IsOptional()
   @IsArray()
+  @ValidateNested({ each: true })
   @Type(() => CreateOptionsDto)
   options?: CreateOptionsDto[];
 }

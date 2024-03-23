@@ -27,12 +27,22 @@ export class CharacteristicService {
   }
 
   async getAllCharacteristics({ count, page }: PaginationQueryDto) {
-    const [{ metadata, data }] = await this.characteristicModel.aggregate([
+    const [aggregateData] = await this.characteristicModel.aggregate([
       {
-        $sort: {
-          sort: 1,
+        $addFields: {
+          group: { $toObjectId: '$group' },
+          groupId: '$group',
         },
       },
+      {
+        $lookup: {
+          from: CharacteristicGroup.name,
+          localField: 'group',
+          foreignField: '_id',
+          as: 'group',
+        },
+      },
+      { $unwind: { path: '$group' } },
       {
         $facet: {
           metadata: [{ $count: 'total' }],
@@ -40,6 +50,10 @@ export class CharacteristicService {
         },
       },
     ]);
+    const { metadata, data } = aggregateData;
+    if (!metadata || !metadata.length) {
+      return new PaginationDto([], 0, count);
+    }
     return new PaginationDto(data, metadata[0].total, count);
   }
 
@@ -70,12 +84,12 @@ export class CharacteristicService {
   }
 
   async createGroup(dto: CreateCharacteristicsGroupDto) {
-    const charGroup = await this.characteristicGroupModel.create({ ...dto });
+    const charGroup = await this.characteristicGroupModel.create(dto);
     return charGroup;
   }
 
   async getAllCharacteristicsGroup({ count, page }: PaginationQueryDto) {
-    const [{ metadata, data }] = await this.characteristicGroupModel.aggregate([
+    const [aggregateData] = await this.characteristicGroupModel.aggregate([
       {
         $sort: {
           sort: 1,
@@ -88,6 +102,10 @@ export class CharacteristicService {
         },
       },
     ]);
+    const { metadata, data } = aggregateData;
+    if (!metadata || !metadata.length) {
+      return new PaginationDto([], 0, count);
+    }
     return new PaginationDto(data, metadata[0].total, count);
   }
 
