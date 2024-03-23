@@ -51,7 +51,7 @@ export class ProductService {
   }
 
   async findAll({ count, page }: PaginationProductQuery) {
-    const [products] = await this.productModel.aggregate([
+    const [{ data }, { metadata }] = await this.productModel.aggregate([
       {
         $sort: {
           createdAt: 1,
@@ -70,7 +70,10 @@ export class ProductService {
         },
       },
     ]);
-    return new PaginationDto(products.data, products.metadata[0].total, count);
+    if (!metadata.length) {
+      return new PaginationDto([], 0, count);
+    }
+    return new PaginationDto(data, metadata[0].total, count);
   }
 
   async findOne(id: string) {
