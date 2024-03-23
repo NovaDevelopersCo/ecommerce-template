@@ -13,6 +13,7 @@ import { PaginationDto } from '@/core/pagination';
 import { TypeReplaceEnum } from '@/core/enums/type-replace.enum';
 import { Option } from '../option/schemas/option.schema';
 import { Characteristic, CharacteristicGroup } from '../characteristic/schemas';
+import { Manufacturer } from '../manufacturer/schemas/manufacturer.schema';
 
 @Injectable()
 export class ProductService {
@@ -81,6 +82,7 @@ export class ProductService {
     const product = await this.productModel
       .findById(id)
       .populate('options.option', {}, Option.name)
+      .populate('manufacturer', {}, Manufacturer.name)
       .populate({
         path: 'characteristics.characteristic',
         model: Characteristic.name,
