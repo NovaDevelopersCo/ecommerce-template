@@ -19,8 +19,7 @@ const AddToCartBtn: FC<TAddToCartBtnProps> = ({ product, ...props }) => {
 		<Button
 			block
 			{...props}
-			onClick={e => {
-				e.stopPropagation()
+			onClick={() => {
 				action.addToCart(product)
 			}}
 		>

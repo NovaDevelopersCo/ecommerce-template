@@ -48,6 +48,9 @@ export const cartSlice = createSlice({
 				return
 			}
 			prevElem.count -= 1
+		},
+		clearCart: state => {
+			state = initialState
 		}
 	}
 })
