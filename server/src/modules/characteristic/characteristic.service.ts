@@ -27,7 +27,7 @@ export class CharacteristicService {
   }
 
   async getAllCharacteristics({ count, page }: PaginationQueryDto) {
-    const [{ metadata, data }] = await this.characteristicModel.aggregate([
+    const [aggregateData] = await this.characteristicModel.aggregate([
       {
         $addFields: {
           group: { $toObjectId: '$group' },
@@ -50,7 +50,8 @@ export class CharacteristicService {
         },
       },
     ]);
-    if (!metadata.length) {
+    const { metadata, data } = aggregateData;
+    if (!metadata || !metadata.length) {
       return new PaginationDto([], 0, count);
     }
     return new PaginationDto(data, metadata[0].total, count);
@@ -88,7 +89,7 @@ export class CharacteristicService {
   }
 
   async getAllCharacteristicsGroup({ count, page }: PaginationQueryDto) {
-    const [{ metadata, data }] = await this.characteristicGroupModel.aggregate([
+    const [aggregateData] = await this.characteristicGroupModel.aggregate([
       {
         $sort: {
           sort: 1,
@@ -101,7 +102,8 @@ export class CharacteristicService {
         },
       },
     ]);
-    if (!metadata.length) {
+    const { metadata, data } = aggregateData;
+    if (!metadata || !metadata.length) {
       return new PaginationDto([], 0, count);
     }
     return new PaginationDto(data, metadata[0].total, count);
