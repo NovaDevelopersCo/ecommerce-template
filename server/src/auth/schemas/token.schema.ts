@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import { AbstractModel } from 'src/core/abstract/abstract.schema';
-import { User } from 'src/modules/user/schemas/user.schema';
+import { AbstractModel } from '@core/abstract/abstract.schema';
+import { User } from '@modules/user/schemas/user.schema';
 
 @Schema()
 export class Token extends AbstractModel {

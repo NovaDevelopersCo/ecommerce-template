@@ -9,14 +9,14 @@ export const getMailConfig = async (
   const mailFromAddress = configService.get<string>('MAIL_FROM_EMAIL');
 
   return {
-    transport:{
+    transport: {
       host: configService.get<string>('MAIL_HOST'),
       port: 465,
       secure: true,
       auth: {
         user: configService.get<string>('MAIL_USER'),
         pass: configService.get<string>('MAIL_PASS'),
-      }
+      },
     },
     defaults: {
       from: `"${mailFromName}" <${mailFromAddress}>`,
