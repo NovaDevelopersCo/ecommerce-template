@@ -16,22 +16,10 @@ const initialState: IProductsState = {
 	error: null
 }
 
-// interface RejectedAction extends Action {
-// 	error: Error
-// }
-
-// function isRejectedAction(action: Action): action is RejectedAction {
-// 	return action.type.endsWith('rejected')
-// }
-
 export const productsSlice = createSlice({
 	name: 'products',
 	initialState,
-	reducers: {
-		addToCart(state, action: PayloadAction<IProduct>) {
-			state.productList.push(action.payload)
-		}
-	},
+	reducers: {},
 	extraReducers: builder => {
 		builder
 			.addMatcher(

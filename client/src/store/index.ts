@@ -1,15 +1,16 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit'
 
-import { productApi } from './api/ProductApi'
-import { productsSlice } from './lib'
+import { productApi, authApi } from './api'
+import { productsSlice, authSlice, cartSlice } from './lib'
 import StoreProvider from './ui/StoreProvider'
 
 export const makeStore = () =>
 	configureStore({
-		reducer: combineSlices(productsSlice, productApi),
+		reducer: combineSlices(productsSlice, /*authSlice,*/ cartSlice, productApi, /*authApi*/),
 		middleware: getDefaultMiddleware =>
 			getDefaultMiddleware().concat(
-				productApi.middleware
+				productApi.middleware,
+				// authApi.middleware
 			)
 	})
 
@@ -21,3 +22,4 @@ export { StoreProvider }
 
 export * from './lib'
 export * from './api'
+export * from './model'

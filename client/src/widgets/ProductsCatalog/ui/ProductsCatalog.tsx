@@ -2,36 +2,25 @@
 
 import { useState } from 'react'
 
-import { LoadingOutlined } from '@ant-design/icons'
-import { Spin } from 'antd'
-
 import { useGetAllProductsQuery } from '@store/index'
+
+import { Paggination } from '@features/Paggination'
 
 import { IProduct } from '@entities/ProductCard'
 
-import Paggination from './@Paggination/Paggination'
-import FullProductCard from './@ProductCard/FullProductCard'
+import { Loading } from '@shared/ui'
+
+import FullProductCard from './@FullProductCard/FullProductCard'
 
 const ProductsCatalog = () => {
 	const [page, setPage] = useState<number>(1)
 	const [limit, setLimit] = useState<number>(6)
-	const { data, isLoading, isError, error } = useGetAllProductsQuery({
+	const { isLoading, isError, error, data } = useGetAllProductsQuery({
 		page,
 		limit
 	})
 
-	const { items, total } = data
-
-	if (isLoading)
-		return (
-			<h1>
-				<Spin
-					indicator={
-						<LoadingOutlined style={{ fontSize: 24 }} spin />
-					}
-				/>
-			</h1>
-		)
+	if (isLoading) return <Loading />
 	if (isError)
 		return (
 			<h1>
@@ -48,14 +37,16 @@ const ProductsCatalog = () => {
 					gap: '10px'
 				}}
 			>
-				{products?.map((product: IProduct) => (
-					<FullProductCard product={product} key={product.id} />
-				)) || 'No products'}
+				{(data.count != 0 &&
+					data?.items?.map((product: IProduct) => (
+						<FullProductCard product={product} key={product._id} />
+					))) ||
+					'No products'}
 			</div>
 			<Paggination
 				page={page}
 				limit={limit}
-				total={total}
+				total={data?.count || 0}
 				setPage={setPage}
 			/>
 		</>

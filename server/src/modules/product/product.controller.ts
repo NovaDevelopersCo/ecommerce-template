@@ -52,7 +52,7 @@ export class ProductController {
     type: CreateProduct,
     description: `Server responce after created product`,
   })
-  @RolesAuthGuard(Role.ADMIN)
+//   @RolesAuthGuard(Role.ADMIN)
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(
     FileFieldsInterceptor([

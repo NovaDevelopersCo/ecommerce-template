@@ -1,3 +1,9 @@
+import { CartList } from '@widgets/CartList'
+
 export default function Page() {
-	return <div>Cart</div>
+	return (
+		<div>
+			<CartList />
+		</div>
+	)
 }

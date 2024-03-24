@@ -24,15 +24,15 @@ export default function RootLayout({ children }: PropsWithChildren<unknown>) {
 	return (
 		<html lang='en'>
 			<body className={roboto.className}>
-				<div className='flex flex-col justify-top min-h-screen align-center'>
-					<Header />
-					<div className='p-5 h-full'>
-						<AppProvider>
+				<AppProvider>
+					<div className='flex flex-col justify-top min-h-screen w-full align-center'>
+						<Header />
+						<div className='p-5 h-full'>
 							<main>{children}</main>
-						</AppProvider>
+						</div>
+						<Footer />
 					</div>
-					<Footer />
-				</div>
+				</AppProvider>
 			</body>
 		</html>
 	)
