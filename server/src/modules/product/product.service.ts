@@ -13,6 +13,7 @@ import { PaginationDto } from '@/core/pagination';
 import { TypeReplaceEnum } from '@/core/enums/type-replace.enum';
 import { Option } from '../option/schemas/option.schema';
 import { Characteristic, CharacteristicGroup } from '../characteristic/schemas';
+import { Manufacturer } from '../manufacturer/schemas/manufacturer.schema';
 
 @Injectable()
 export class ProductService {
@@ -26,7 +27,7 @@ export class ProductService {
     image: Express.Multer.File,
     albumFile?: Express.Multer.File[],
   ) {
-    const imageUrl = await this.convertAndUpload(image);
+    const imageUrl = await this.fileService.convertAndUpload(image);
     let album: { sort: number; image: string }[];
 
     if (albumFile) {
@@ -34,7 +35,7 @@ export class ProductService {
         albumFile.map(async (file: Express.Multer.File, index: number) => {
           return {
             sort: index,
-            image: await this.convertAndUpload(file),
+            image: await this.fileService.convertAndUpload(file),
           };
         }),
       );
@@ -58,9 +59,31 @@ export class ProductService {
         },
       },
       {
+        $addFields: {
+          manufacturer: {
+            $toObjectId: '$manufacturer',
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: 'manufacturers',
+          foreignField: '_id',
+          localField: 'manufacturer',
+          as: 'manufacturer',
+        },
+      },
+      {
         $project: {
           options: 0,
           characteristics: 0,
+        },
+      },
+      {
+        $addFields: {
+          manufacturer: {
+            $first: '$manufacturer',
+          },
         },
       },
       {
@@ -81,6 +104,7 @@ export class ProductService {
     const product = await this.productModel
       .findById(id)
       .populate('options.option', {}, Option.name)
+      .populate('manufacturer', {}, Manufacturer.name)
       .populate({
         path: 'characteristics.characteristic',
         model: Characteristic.name,
@@ -97,7 +121,7 @@ export class ProductService {
     const product = await this.findOne(id);
     if (dto.name) dto['slug'] = generateSlug(dto.name + '-' + id);
     if (image) {
-      dto['image'] = await this.convertAndUpload(image);
+      dto['image'] = await this.fileService.convertAndUpload(image);
       this.fileService.deleteFile(product.image);
     }
     return this.productModel.findOneAndUpdate(
@@ -119,7 +143,7 @@ export class ProductService {
         files.map(async (file: Express.Multer.File, index: number) => {
           return {
             sort: index,
-            image: await this.convertAndUpload(file),
+            image: await this.fileService.convertAndUpload(file),
           };
         }),
       );
@@ -134,7 +158,7 @@ export class ProductService {
         files.map(async (file: Express.Multer.File, index: number) => {
           return {
             sort: index + product.album.length,
-            image: await this.convertAndUpload(file),
+            image: await this.fileService.convertAndUpload(file),
           };
         }),
       );
@@ -153,14 +177,5 @@ export class ProductService {
     );
     await this.fileService.deleteFile(product.image);
     await this.productModel.deleteOne({ _id: id });
-  }
-
-  private async convertAndUpload(file: Express.Multer.File) {
-    const buffer = await this.fileService.convertToWebp(file.buffer);
-    return await this.fileService.uploadFile({
-      ...file,
-      buffer,
-      mimetype: 'image/webp',
-    });
   }
 }

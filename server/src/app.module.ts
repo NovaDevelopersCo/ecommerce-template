@@ -1,19 +1,24 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EnvConfigOptions, MongooseConfigService } from './configs';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ProductModule } from '@modules/product/product.module';
-import { CharacteristicModule } from './modules/characteristic/characteristic.module';
-import { OptionModule } from './modules/option/option.module';
-import { FileModule } from './core/file/file.module';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './modules/user/user.module';
-import { getMailConfig } from './configs/mail.config';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { TelegramModule } from './notification/telegram/telegram.module';
-import { getTelegramConfig } from './configs/telegram.config';
-import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MailerModule } from '@nestjs-modules/mailer';
+import {
+  getTelegramConfig,
+  getMailConfig,
+  EnvConfigOptions,
+  MongooseConfigService,
+} from '@config';
+import { ProductModule } from '@modules/product/product.module';
+import { CharacteristicModule } from '@modules/characteristic/characteristic.module';
+import { OptionModule } from '@modules/option/option.module';
+import { ManufacturerModule } from '@modules/manufacturer/manufacturer.module';
+import { UserModule } from '@modules/user/user.module';
+import { AuthModule } from '@auth/auth.module';
+import { FileModule } from '@core/file/file.module';
+import { TelegramModule } from '@notification/telegram/telegram.module';
+import { MailModule } from '@notification/mail/mail.module';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -41,6 +46,10 @@ import { ServeStaticModule } from '@nestjs/serve-static';
       rootPath: join(__dirname, '..', 'static'),
       serveRoot: '/file',
     }),
+    MailModule,
+    AuthModule,
+    UserModule,
+    ManufacturerModule,
   ],
 })
 export class AppModule {}

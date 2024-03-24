@@ -12,22 +12,19 @@ export class MailService {
   ) {}
 
   async emailSend<T>(mailData: IMail<T>) {
-    const urlConfirmAddress = this.configService.get<string>(
-      'URL_CONFIRM_ADDRESS',
-    );
-
-    return this.mailerService
-      .sendMail({
+    try {
+      await this.mailerService.sendMail({
         to: mailData.to,
         subject: mailData.subject,
         template: join(__dirname, '/../templates', mailData.template),
         context: mailData.context,
-      })
-      .catch((e) => {
-        throw new HttpException(
-          `Ошибка работы почты: ${JSON.stringify(e)}`,
-          HttpStatus.UNPROCESSABLE_ENTITY,
-        );
       });
+    } catch (e) {
+      console.error(e);
+      throw new HttpException(
+        `Ошибка работы почты: ${JSON.stringify(e)}`,
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
   }
 }

@@ -7,6 +7,6 @@ export const getTelegramConfig = (
   const token = configService.get('TELEGRAM_TOKEN');
   return {
     token,
-    chatId: configService.get('CHAT_ID') ?? '',
+    chatId: configService.get('CHAT_ID'),
   };
 };

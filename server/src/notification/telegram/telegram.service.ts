@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
-import { ITelegramOptions } from './inteface/telegram.interface';
+import { ITelegramOptions } from './inteface';
 import { TELEGRAM_MODULE_OPTIONS } from './telegram.constants';
 
 @Injectable()
 export class TelegramService {
-  bot: Telegraf;
-  options: ITelegramOptions;
+  private bot: Telegraf;
+  private options: ITelegramOptions;
 
   constructor(@Inject(TELEGRAM_MODULE_OPTIONS) options: ITelegramOptions) {
     this.options = options;

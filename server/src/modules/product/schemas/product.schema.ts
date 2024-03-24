@@ -3,6 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { Option } from '@/modules/option/schemas/option.schema';
 import { Characteristic } from '@/modules/characteristic/schemas';
+import { Manufacturer } from '@/modules/manufacturer/schemas/manufacturer.schema';
 export class ProductAlbum {
   @Prop({ required: true })
   image: string;
@@ -68,8 +69,13 @@ export class Product extends AbstractModel {
   @Prop({ type: () => [ProductOption], _id: false })
   options?: ProductOption[];
 
-  // @Prop()
-  // manufacturer?: string;
+  @Prop({
+    type: Types.ObjectId,
+    ref: Option.name,
+    required: false,
+    default: null,
+  })
+  manufacturer?: Manufacturer;
 
   // @Prop()
   // categories: string[];

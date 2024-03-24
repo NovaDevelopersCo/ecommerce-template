@@ -37,6 +37,15 @@ export class FileService {
     return await sharp(file).webp().toBuffer();
   }
 
+  async convertAndUpload(file: Express.Multer.File) {
+    const buffer = await this.convertToWebp(file.buffer);
+    return await this.uploadFile({
+      ...file,
+      buffer,
+      mimetype: 'image/webp',
+    });
+  }
+
   private async exists(path: string) {
     try {
       await access(path);

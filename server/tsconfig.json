@@ -22,7 +22,8 @@
       "@auth/*": ["./src/auth/*"],
       "@modules/*": ["./src/modules/*"],
       "@core/*": ["./src/core/*"],
-      "@config": ["./src/configs"]
+      "@config": ["./src/configs"],
+      "@notification/*": ["./src/notification/*"]
     }
   }
 }

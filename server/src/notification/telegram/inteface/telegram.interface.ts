@@ -8,6 +8,5 @@ export interface ITelegramOptions {
 export interface ITelegramModuleAsyncOptions
   extends Pick<ModuleMetadata, 'imports'> {
   useFactory: (...args: any[]) => Promise<ITelegramOptions> | ITelegramOptions;
-
   inject?: any[];
 }
