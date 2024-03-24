@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from 'antd'
+import { v4 as uuid } from 'uuid'
 
 import { ICartElem, useAppSelector } from '@store/index'
 
@@ -9,8 +10,6 @@ import { ClearCartBtn } from '@features/ClearCart'
 import { RemoveFromCartBtn } from '@features/RemoveFromCart'
 
 import { CartCard } from '@entities/CartCard'
-
-import {v4 as uuid} from 'uuid'
 
 const CartList = () => {
 	const cartList = useAppSelector(state => state.cart.cart)
