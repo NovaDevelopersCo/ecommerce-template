@@ -8,7 +8,7 @@ import { IProduct } from '@entities/ProductCard'
 
 import { Loading } from '@shared/ui'
 
-import Paggination from './@Paggination/Paggination'
+import {Paggination} from '@features/Paggination'
 import FullProductCard from './@ProductCard/FullProductCard'
 
 const ProductsCatalog = () => {
