@@ -23,6 +23,7 @@ import { CreateOptionsDto } from './dto/create-options.dto';
 import { ObjectIdValidationPipe } from '@/core/pipes/object-id.validation.pipe';
 import { PaginationQueryDto } from '@/core/pagination';
 import { UpdateOptionsDto } from './dto';
+import { REGEX_FILE_TYPE_IMG } from '@/core/constants';
 
 @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
 @Controller('option')
@@ -39,7 +40,7 @@ export class OptionController {
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
-          fileType: /\/(jpg|jpeg|png|webp)$/,
+          fileType: REGEX_FILE_TYPE_IMG,
         })
         .build({
           fileIsRequired: false,
@@ -67,7 +68,7 @@ export class OptionController {
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
-          fileType: /\/(jpg|jpeg|png|webp)$/,
+          fileType: REGEX_FILE_TYPE_IMG,
         })
         .build({
           fileIsRequired: false,

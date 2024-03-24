@@ -35,6 +35,7 @@ import { ObjectIdValidationPipe } from '@/core/pipes/object-id.validation.pipe';
 import { RolesAuthGuard } from '@/auth/guards';
 import { Role } from '@/core/enums';
 import { CreateProduct } from './swagger';
+import { REGEX_FILE_TYPE_IMG } from '@/core/constants';
 
 @ApiTags('product')
 @UsePipes(
@@ -63,7 +64,7 @@ export class ProductController {
   create(
     @Body() dto: CreateProductDto,
     @UploadedFiles({
-      transform: new FileFieldsValidator(/\/(jpg|jpeg|png|webp)$/).transform,
+      transform: new FileFieldsValidator(REGEX_FILE_TYPE_IMG).transform,
     })
     files: { album?: Express.Multer.File[]; image: Express.Multer.File[] },
   ) {
@@ -95,7 +96,7 @@ export class ProductController {
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
-          fileType: /\/(jpg|jpeg|png|webp)$/,
+          fileType: REGEX_FILE_TYPE_IMG,
         })
         .build({
           fileIsRequired: false,
@@ -114,7 +115,7 @@ export class ProductController {
     @Param('id', ObjectIdValidationPipe) id: string,
     @Body() { type }: UploadAlbumDto,
     @UploadedFiles({
-      transform: new FileFieldsValidator(/\/(jpg|jpeg|png)$/).transform,
+      transform: new FileFieldsValidator(REGEX_FILE_TYPE_IMG).transform,
     })
     files: { album: Express.Multer.File[] },
   ) {

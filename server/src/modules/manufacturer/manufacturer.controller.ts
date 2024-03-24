@@ -36,6 +36,7 @@ import { Role } from '@/core/enums';
 import { PaginationQueryDto } from '@/core/pagination';
 import { ReturnPaginationManufacturerDto } from './swagger';
 import { ObjectIdValidationPipe } from '@/core/pipes/object-id.validation.pipe';
+import { REGEX_FILE_TYPE_IMG } from '@/core/constants';
 
 @ApiTags('manufacturer')
 @UsePipes(new ValidationPipe({ whitelist: true }))
@@ -58,9 +59,7 @@ export class ManufacturerController {
     @Body() dto: CreateManufacturerDto,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({ fileType: /\/(jpg|jpeg|png|webp)$/ }),
-        ],
+        validators: [new FileTypeValidator({ fileType: REGEX_FILE_TYPE_IMG })],
         fileIsRequired: false,
       }),
     )
@@ -107,7 +106,7 @@ export class ManufacturerController {
     @Body() updateManufacturerDto: UpdateManufacturerDto,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
+        validators: [new FileTypeValidator({ fileType: REGEX_FILE_TYPE_IMG })],
         fileIsRequired: false,
       }),
     )
