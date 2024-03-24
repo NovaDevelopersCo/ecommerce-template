@@ -1,12 +1,8 @@
-import {signOut} from 'next-auth/react'
-import {Button} from 'antd'
+import { Button } from 'antd'
+import { signOut } from 'next-auth/react'
 
 const LogoutBtn = () => {
-  return (
-	<Button onMouseDown={() => signOut()}>
-		Logout
-	</Button>
-  )
+	return <Button onMouseDown={() => signOut()}>Logout</Button>
 }
 
 export default LogoutBtn

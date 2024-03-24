@@ -12,7 +12,9 @@ const Banner: FC<TBannerProps> = ({ slides }) => {
 	return (
 		<Carousel autoplay>
 			{slides.map((slide, idx) => (
-				<div key={idx}><div className="h-min">{slide}</div></div>
+				<div key={idx}>
+					<div className='h-min'>{slide}</div>
+				</div>
 			))}
 		</Carousel>
 	)

@@ -5,12 +5,15 @@ import { useState } from 'react'
 import { Menu } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import CartAside from './@CartAside/CartAside'
-import NavLinks from './@NavLinks/NavLinks'
-import {SearchForm} from '@features/Search'
-import { SignInUpBtn, LogoutBtn } from '@features/Auth'
-import CartBtn from './@CartBtn/CartBtn'
+
+import { LogoutBtn, SignInUpBtn } from '@features/Auth'
+import { SearchForm } from '@features/Search'
+
 import { Logo } from '@shared/ui'
+
+import CartAside from './@CartAside/CartAside'
+import CartBtn from './@CartBtn/CartBtn'
+import NavLinks from './@NavLinks/NavLinks'
 
 const Header = () => {
 	const [isBurgerActive, setIsBurgerActive] = useState<boolean>(false)
@@ -22,7 +25,10 @@ const Header = () => {
 			<div className='flex flex-row justify-between items-center gap-x-6'>
 				<Logo />
 				<nav className='flex flex-row gap-x-6 items-center md:contents'>
-					<NavLinks isBurgerActive={isBurgerActive} setIsBurgerActive={setIsBurgerActive} />
+					<NavLinks
+						isBurgerActive={isBurgerActive}
+						setIsBurgerActive={setIsBurgerActive}
+					/>
 
 					<div className='flex flex-row gap-x-6 items-center'>
 						<SearchForm />
@@ -57,7 +63,10 @@ const Header = () => {
 					</div>
 				</nav>
 
-				<CartAside isCartActive={isCartActive} setIsCartActive={setIsCartActive} />
+				<CartAside
+					isCartActive={isCartActive}
+					setIsCartActive={setIsCartActive}
+				/>
 			</div>
 		</header>
 	)

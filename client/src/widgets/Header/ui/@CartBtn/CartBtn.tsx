@@ -1,7 +1,12 @@
-import Link from 'next/link'
-import { SetStateAction, Dispatch } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
-const CartBtn = ({ setIsCartActive }: { setIsCartActive: Dispatch<SetStateAction<boolean>> }) => {
+import Link from 'next/link'
+
+const CartBtn = ({
+	setIsCartActive
+}: {
+	setIsCartActive: Dispatch<SetStateAction<boolean>>
+}) => {
 	return (
 		<>
 			<Link

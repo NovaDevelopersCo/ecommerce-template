@@ -1,10 +1,11 @@
-import { AutoComplete } from 'antd'
 import React, { useState } from 'react'
+
+import { AutoComplete } from 'antd'
 
 const SearchForm = () => {
 	const [search, setSearch] = useState<string>()
 	const [options, setOptions] = useState<DefaultOptionType[]>([])
-	
+
 	const handleSearch = (value: string) => {
 		setOptions(() => {
 			if (!value || value.includes('@')) {
@@ -20,10 +21,7 @@ const SearchForm = () => {
 	}
 
 	return (
-		<form
-			action={''}
-			className='flex flex-row items-center'
-		>
+		<form action={''} className='flex flex-row items-center'>
 			<AutoComplete
 				style={{
 					width: '170px'
@@ -36,8 +34,7 @@ const SearchForm = () => {
 				filterOption={(inputValue, option) =>
 					option!.value
 						.toUpperCase()
-						.indexOf(inputValue.toUpperCase()) !==
-					-1
+						.indexOf(inputValue.toUpperCase()) !== -1
 				}
 			/>
 		</form>

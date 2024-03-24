@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from "antd"
-import { useRouter } from "next/navigation"
+import { Button } from 'antd'
+import { useRouter } from 'next/navigation'
 
 const SignInUpBtn = () => {
 	const router = useRouter()
