@@ -38,6 +38,19 @@ export const productApi = createApi({
 				providesTags: () => ['Products']
 			})
 		}),
+		getAllProductsWithoutExtra: builder.query<
+			TServerResponse<IProduct[]>,
+			GetAllProductsAPIParams
+		>({
+			query: ({ page, limit }) => ({
+				url: 'product',
+				params: {
+					count: limit,
+					page: page
+				},
+				providesTags: () => ['Products']
+			})
+		}),
 		getProductById: builder.query<IProduct, string>({
 			query: id => ({
 				url: `product/${id}`

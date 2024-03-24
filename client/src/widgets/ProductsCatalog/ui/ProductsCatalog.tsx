@@ -4,11 +4,12 @@ import { useState } from 'react'
 
 import { useGetAllProductsQuery } from '@store/index'
 
+import { Paggination } from '@features/Paggination'
+
 import { IProduct } from '@entities/ProductCard'
 
 import { Loading } from '@shared/ui'
 
-import {Paggination} from '@features/Paggination'
 import FullProductCard from './@ProductCard/FullProductCard'
 
 const ProductsCatalog = () => {
