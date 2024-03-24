@@ -59,9 +59,31 @@ export class ProductService {
         },
       },
       {
+        $addFields: {
+          manufacturer: {
+            $toObjectId: '$manufacturer',
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: 'manufacturers',
+          foreignField: '_id',
+          localField: 'manufacturer',
+          as: 'manufacturer',
+        },
+      },
+      {
         $project: {
           options: 0,
           characteristics: 0,
+        },
+      },
+      {
+        $addFields: {
+          manufacturer: {
+            $first: '$manufacturer',
+          },
         },
       },
       {
