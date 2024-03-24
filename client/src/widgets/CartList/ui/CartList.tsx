@@ -5,9 +5,7 @@ import { v4 as uuid } from 'uuid'
 
 import { ICartElem, useAppSelector } from '@store/index'
 
-import { AddToCartBtn } from '@features/AddToCart'
-import { ClearCartBtn } from '@features/ClearCart'
-import { RemoveFromCartBtn } from '@features/RemoveFromCart'
+import { AddToCartBtn, ClearCartBtn, RemoveFromCartBtn } from '@features/Cart'
 
 import { CartCard } from '@entities/CartCard'
 

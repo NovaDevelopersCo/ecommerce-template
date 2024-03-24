@@ -1,11 +1,12 @@
 import { PropsWithChildren } from 'react'
 
-import { Banner } from '@widgets/Banner'
+import { BannerAntd } from '@widgets/Banner'
+
+import {v4 as uuid} from 'uuid'
 
 export default function StoreLayout({ children }: PropsWithChildren<unknown>) {
 	return (
 		<>
-			{/* <Banner /> */}
 			{children}
 		</>
 	)

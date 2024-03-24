@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { AddToCartBtn } from '@features/AddToCart'
+import { AddToCartBtn } from '@features/Cart'
 
 import { IProduct, ProductCard } from '@entities/ProductCard'
 
