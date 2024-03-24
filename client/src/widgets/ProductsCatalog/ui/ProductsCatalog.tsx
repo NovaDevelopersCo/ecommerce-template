@@ -10,7 +10,7 @@ import { IProduct } from '@entities/ProductCard'
 
 import { Loading } from '@shared/ui'
 
-import FullProductCard from './@ProductCard/FullProductCard'
+import FullProductCard from './@FullProductCard/FullProductCard'
 
 const ProductsCatalog = () => {
 	const [page, setPage] = useState<number>(1)
