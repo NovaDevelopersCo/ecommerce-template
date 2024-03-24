@@ -69,7 +69,12 @@ export class Product extends AbstractModel {
   @Prop({ type: () => [ProductOption], _id: false })
   options?: ProductOption[];
 
-  @Prop({ type: Types.ObjectId, ref: Option.name, required: false })
+  @Prop({
+    type: Types.ObjectId,
+    ref: Option.name,
+    required: false,
+    default: null,
+  })
   manufacturer?: Manufacturer;
 
   // @Prop()
