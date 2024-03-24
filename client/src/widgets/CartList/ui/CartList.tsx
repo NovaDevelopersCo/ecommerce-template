@@ -10,6 +10,8 @@ import { RemoveFromCartBtn } from '@features/RemoveFromCart'
 
 import { CartCard } from '@entities/CartCard'
 
+import {v4 as uuid} from 'uuid'
+
 const CartList = () => {
 	const cartList = useAppSelector(state => state.cart.cart)
 	return (
@@ -21,10 +23,10 @@ const CartList = () => {
 							cartElem={el}
 							key={idx}
 							featureList={[
-								<AddToCartBtn product={el.item} key={idx} />,
+								<AddToCartBtn product={el.item} key={uuid()} />,
 								<RemoveFromCartBtn
 									product={el.item}
-									key={idx}
+									key={uuid()}
 								/>
 							]}
 						/>

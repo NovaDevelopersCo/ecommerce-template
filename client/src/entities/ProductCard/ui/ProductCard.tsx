@@ -58,7 +58,15 @@ const ProductCard: FC<PropsWithChildren<TProductCardProps>> = ({
 			}}
 		>
 			<Skeleton loading={loading} active>
-				<Meta title={product.name} description={product.description} />
+				<Meta
+					title={<h1>{product.name}</h1>}
+					description={
+						<>
+							<p>{product.description}</p>
+							<p>{product.price}$</p>
+						</>
+					}
+				/>
 			</Skeleton>
 		</Card>
 	)

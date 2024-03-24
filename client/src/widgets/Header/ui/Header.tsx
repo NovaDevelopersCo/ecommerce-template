@@ -9,11 +9,20 @@ import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import {useAppSelector, ICartElem} from '@store/index'
+import {AddToCartBtn} from '@features/AddToCart'
+import {RemoveFromCartBtn} from '@features/RemoveFromCart'
+import {ClearCartBtn} from '@features/ClearCart'
+import {CartCard} from '@entities/CartCard'
+import { v4 as uuid } from 'uuid';
+
 
 const Header = () => {
 	const [search, setSearch] = useState<string>()
 	const [options, setOptions] = useState<DefaultOptionType[]>([])
 	const [isBurgerActive, setIsBurgerActive] = useState<boolean>(false)
+	const [isCartActive, setIsCartActive] = useState<boolean>(false)
+	const cartList = useAppSelector(state => state.cart.cart)
 
 	const { data: session } = useSession()
 	const router = useRouter()
@@ -48,7 +57,7 @@ const Header = () => {
 	}
 
 	return (
-		<header className='w-full sticky p-5 z-100'>
+		<header className='w-full sticky p-5 z-[100]'>
 			<div className='flex flex-row justify-between items-center gap-x-6'>
 				<div>
 					<h1>Logo</h1>
@@ -56,7 +65,7 @@ const Header = () => {
 				<nav className='flex flex-row gap-x-6 items-center md:contents'>
 					<ul
 						className={clsx(
-							'-z-10 md:z-10 flex justify-around md:bg-transparent backdrop-blur-sm md:w-fit md:h-auto gap-x-4 md:flex-row flex-col md:relative fixed top-0 left-0 md:translate-y-0 w-screen h-screen items-center',
+							'-z-10 md:z-10 flex justify-around md:bg-transparent bg-black/50 backdrop-blur-sm md:w-fit md:h-auto gap-x-4 md:flex-row flex-col md:relative fixed top-0 left-0 md:translate-y-0 w-screen h-screen items-center',
 							!isBurgerActive && '-translate-y-full'
 						)}
 						onClick={() => setIsBurgerActive(false)}
@@ -105,12 +114,6 @@ const Header = () => {
 							</Button>
 						) : (
 							<>
-								<Link
-									href='/cart'
-									className='md:order-none order-2'
-								>
-									Cart
-								</Link>
 								<button className='flex flex-row items-center gap-x-2'>
 									<p className='lg:block hidden'>
 										{session.user?.name}
@@ -129,6 +132,18 @@ const Header = () => {
 								</Button>
 							</>
 						)}
+						<Link
+							href='/cart'
+							className='md:order-none order-2 lg:hidden block'
+						>
+							Cart
+						</Link>
+						<button
+							className='md:order-none order-2 lg:block hidden'
+							onClick={() => setIsCartActive(true)}
+						>
+							Show Cart
+						</button>
 						<button
 							className='md:hidden block order-last'
 							onClick={() => setIsBurgerActive(prev => !prev)}
@@ -137,6 +152,32 @@ const Header = () => {
 						</button>
 					</div>
 				</nav>
+
+				<aside className={clsx('lg:block hidden fixed h-screen w-1/4 right-0 top-0 bg-black z-[9999] p-4', isCartActive ? 'translate-x-0' : 'translate-x-full' )}>
+					<div className='flex flex-col'>
+						<button onClick={() => setIsCartActive(false)}>Close</button>
+						{cartList.length != 0 ?
+							<>
+								{cartList.map((el: ICartElem, idx: number) => (
+									<CartCard
+										cartElem={el}
+										key={idx}
+										featureList={[
+											<AddToCartBtn product={el.item} key={uuid()} />,
+											<RemoveFromCartBtn
+												product={el.item}
+												key={uuid()}
+											/>
+										]}
+									/>
+								))}
+								<Button className="mt-auto">To payment</Button>
+								<ClearCartBtn />
+							</>
+							: <h1>Seems like there is no products in your cart</h1>
+						}
+					</div>
+				</aside>
 			</div>
 		</header>
 	)

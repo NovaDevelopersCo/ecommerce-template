@@ -14,6 +14,7 @@ const CartCard = ({
 			<div className='flex flex-col'>
 				<h1>{cartElem.item.name}</h1>
 				<h6>{cartElem.item.description}</h6>
+				<h6>{cartElem.item.cost}$</h6>
 			</div>
 			<div className='flex flex-col'>
 				{featureList && <>{...featureList}</>}
